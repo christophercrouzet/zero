@@ -1,7 +1,7 @@
 Zero
 ====
 
-Zero is a bunch of single-files libraries for C/C++.
+Zero is a bunch of single-file libraries for C/C++.
 
 It is written in C89 at the exception of a couple of features borrowed from C99,
 namely fixed-width integer types and variadic macros.
@@ -39,7 +39,7 @@ using either the ILP32, LP64, or LLP64 data models, which all guarantee the
 lines for most of the projects, then why including a standard header that
 resolves to _thousands_ of lines of code with its dependencies? For the exotic
 platforms, the macro `ZR_USE_STD_FIXED_TYPES` can be defined, or each type can
-be overrided individually.
+be overridden individually.
 
 The same applies to redefining `size_t`—on almost all platforms the size of
 `size_t` equals the targetted architecture, that is either 32 or 64 bits. Here
