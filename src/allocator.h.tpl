@@ -5,7 +5,7 @@
 
 #define ZR_ALLOCATOR_MAJOR_VERSION 0
 #define ZR_ALLOCATOR_MINOR_VERSION 1
-#define ZR_ALLOCATOR_PATCH_VERSION 0
+#define ZR_ALLOCATOR_PATCH_VERSION 1
 
 /* @include "partials/environment.h" */
 /* @include "partials/types.h" */
@@ -151,8 +151,8 @@ static const size_t zrpMinAlignment
 static int
 zrpIsPowerOfTwo(ZrSize x)
 {
-    /* Complement and compare approach. */
-    return (x != 0) && ((x & (~x + 1)) == x);
+    /* Decrement and compare approach. */
+    return (x != 0) && !(x & (x - 1));
 }
 
 ZRP_ALLOCATOR_SCOPE void *
