@@ -9,6 +9,8 @@
 #define ZR_LOGGER_MINOR_VERSION 1
 #define ZR_LOGGER_PATCH_VERSION 0
 
+/* @include "partials/platform.h" */
+
 #ifndef ZRP_LOGGER_SCOPE
 #ifdef ZR_LOGGER_STATIC
 #define ZRP_LOGGER_SCOPE static
@@ -57,9 +59,7 @@ zrLogVaList(ZrLogLevel level,
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
 
-#if !defined(ZR_LOGGER_NO_COLORING) && !defined(_WIN32)                        \
-    && (defined(__unix__) || defined(__unix)                                   \
-        || (defined(__APPLE__) && defined(__MACH__)))
+#if !defined(ZR_LOGGER_NO_COLORING) && defined(ZRP_PLATFORM_UNIX)
 #include <unistd.h>
 #define ZRP_LOGGER_COLORING
 #endif

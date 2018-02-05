@@ -31,6 +31,25 @@
 #define ZR_LOGGER_MINOR_VERSION 1
 #define ZR_LOGGER_PATCH_VERSION 0
 
+#ifndef ZRP_PLATFORM_DEFINED
+#define ZRP_PLATFORM_DEFINED
+#if defined(_WIN32)
+#define ZRP_PLATFORM_WINDOWS
+#elif defined(__unix__) || defined(__APPLE__)
+#define ZRP_PLATFORM_UNIX
+#if defined(__APPLE__)
+#define ZRP_PLATFORM_DARWIN
+#if TARGET_OS_IPHONE == 1
+#define ZRP_PLATFORM_IOS
+#elif TARGET_OS_MAC == 1
+#define ZRP_PLATFORM_MACOS
+#endif
+#elif defined(__linux__)
+#define ZRP_PLATFORM_LINUX
+#endif
+#endif
+#endif /* ZRP_PLATFORM_DEFINED */
+
 #ifndef ZRP_LOGGER_SCOPE
 #ifdef ZR_LOGGER_STATIC
 #define ZRP_LOGGER_SCOPE static
@@ -79,9 +98,7 @@ zrLogVaList(ZrLogLevel level,
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
 
-#if !defined(ZR_LOGGER_NO_COLORING) && !defined(_WIN32)                        \
-    && (defined(__unix__) || defined(__unix)                                   \
-        || (defined(__APPLE__) && defined(__MACH__)))
+#if !defined(ZR_LOGGER_NO_COLORING) && defined(ZRP_PLATFORM_UNIX)
 #include <unistd.h>
 #define ZRP_LOGGER_COLORING
 #endif
