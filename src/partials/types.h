@@ -1,4 +1,5 @@
 #ifndef ZRP_FIXED_TYPES_DEFINED
+#define ZRP_FIXED_TYPES_DEFINED
 #ifdef ZR_USE_STD_FIXED_TYPES
 #include <stdint.h>
 typedef int8_t ZrInt8;
@@ -67,10 +68,10 @@ typedef char zr_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
 typedef char zr_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
 typedef char zr_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
 #endif
-#define ZRP_FIXED_TYPES_DEFINED
 #endif
 
 #ifndef ZRP_BASIC_TYPES_DEFINED
+#define ZRP_BASIC_TYPES_DEFINED
 #ifdef ZR_USE_STD_BASIC_TYPES
 #include <stddef.h>
 typedef size_t ZrSize;
@@ -92,5 +93,4 @@ typedef ZrUint64 ZrSize;
 typedef char
     zr_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
 #endif
-#define ZRP_BASIC_TYPES_DEFINED
 #endif

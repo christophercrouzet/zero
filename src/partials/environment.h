@@ -1,4 +1,5 @@
 #ifndef ZRP_ARCH_DEFINED
+#define ZRP_ARCH_DEFINED
 #if defined(__x86_64__) || defined(_M_X64)
 #define ZR_ARCH_X86_64
 #elif defined(__i386) || defined(_M_IX86)
@@ -14,7 +15,6 @@
 #elif defined(__arm__)
 #define ZR_ARCH_ARM_32
 #endif
-#define ZRP_ARCH_DEFINED
 #endif
 
 /*

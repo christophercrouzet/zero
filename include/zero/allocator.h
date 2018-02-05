@@ -27,9 +27,10 @@
 
 #define ZR_ALLOCATOR_MAJOR_VERSION 0
 #define ZR_ALLOCATOR_MINOR_VERSION 1
-#define ZR_ALLOCATOR_PATCH_VERSION 1
+#define ZR_ALLOCATOR_PATCH_VERSION 2
 
 #ifndef ZRP_ARCH_DEFINED
+#define ZRP_ARCH_DEFINED
 #if defined(__x86_64__) || defined(_M_X64)
 #define ZR_ARCH_X86_64
 #elif defined(__i386) || defined(_M_IX86)
@@ -45,7 +46,6 @@
 #elif defined(__arm__)
 #define ZR_ARCH_ARM_32
 #endif
-#define ZRP_ARCH_DEFINED
 #endif
 
 /*
@@ -69,6 +69,7 @@ typedef char zr_invalid_environment_value
 #endif
 
 #ifndef ZRP_FIXED_TYPES_DEFINED
+#define ZRP_FIXED_TYPES_DEFINED
 #ifdef ZR_USE_STD_FIXED_TYPES
 #include <stdint.h>
 typedef int8_t ZrInt8;
@@ -137,10 +138,10 @@ typedef char zr_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
 typedef char zr_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
 typedef char zr_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
 #endif
-#define ZRP_FIXED_TYPES_DEFINED
 #endif
 
 #ifndef ZRP_BASIC_TYPES_DEFINED
+#define ZRP_BASIC_TYPES_DEFINED
 #ifdef ZR_USE_STD_BASIC_TYPES
 #include <stddef.h>
 typedef size_t ZrSize;
@@ -162,7 +163,6 @@ typedef ZrUint64 ZrSize;
 typedef char
     zr_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
 #endif
-#define ZRP_BASIC_TYPES_DEFINED
 #endif
 
 #ifndef ZRP_ALLOCATOR_SCOPE
