@@ -46,7 +46,7 @@
 #elif defined(__arm__)
 #define ZR_ARCH_ARM_32
 #endif
-#endif
+#endif /* ZRP_ARCH_DEFINED */
 
 /*
    The environment macro represents whether the code is to be generated for a
@@ -66,7 +66,7 @@
 typedef char zr_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
 #endif
-#endif
+#endif /* ZR_ENVIRONMENT */
 
 #ifndef ZRP_FIXED_TYPES_DEFINED
 #define ZRP_FIXED_TYPES_DEFINED
@@ -138,7 +138,7 @@ typedef char zr_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
 typedef char zr_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
 typedef char zr_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
 #endif
-#endif
+#endif /* ZRP_FIXED_TYPES_DEFINED */
 
 #ifndef ZRP_BASIC_TYPES_DEFINED
 #define ZRP_BASIC_TYPES_DEFINED
@@ -163,7 +163,7 @@ typedef ZrUint64 ZrSize;
 typedef char
     zr_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
 #endif
-#endif
+#endif /* ZRP_BASIC_TYPES_DEFINED */
 
 #ifndef ZRP_ALLOCATOR_SCOPE
 #ifdef ZR_ALLOCATOR_STATIC

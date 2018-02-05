@@ -15,7 +15,7 @@
 #elif defined(__arm__)
 #define ZR_ARCH_ARM_32
 #endif
-#endif
+#endif /* ZRP_ARCH_DEFINED */
 
 /*
    The environment macro represents whether the code is to be generated for a
@@ -35,4 +35,4 @@
 typedef char zr_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
 #endif
-#endif
+#endif /* ZR_ENVIRONMENT */
