@@ -27,24 +27,24 @@
 
 #define ZR_ALLOCATOR_MAJOR_VERSION 0
 #define ZR_ALLOCATOR_MINOR_VERSION 1
-#define ZR_ALLOCATOR_PATCH_VERSION 2
+#define ZR_ALLOCATOR_PATCH_VERSION 3
 
 #ifndef ZRP_ARCH_DEFINED
 #define ZRP_ARCH_DEFINED
 #if defined(__x86_64__) || defined(_M_X64)
-#define ZR_ARCH_X86_64
+#define ZRP_ARCH_X86_64
 #elif defined(__i386) || defined(_M_IX86)
-#define ZR_ARCH_X86_32
+#define ZRP_ARCH_X86_32
 #elif defined(__itanium__) || defined(_M_IA64)
-#define ZR_ARCH_ITANIUM_64
+#define ZRP_ARCH_ITANIUM_64
 #elif defined(__powerpc64__) || defined(__ppc64__)
-#define ZR_ARCH_POWERPC_64
+#define ZRP_ARCH_POWERPC_64
 #elif defined(__powerpc__) || defined(__ppc__)
-#define ZR_ARCH_POWERPC_32
+#define ZRP_ARCH_POWERPC_32
 #elif defined(__aarch64__)
-#define ZR_ARCH_ARM_64
+#define ZRP_ARCH_ARM_64
 #elif defined(__arm__)
-#define ZR_ARCH_ARM_32
+#define ZRP_ARCH_ARM_32
 #endif
 #endif /* ZRP_ARCH_DEFINED */
 
@@ -55,9 +55,9 @@
    compiler switches, in which case `ZR_ENVIRONMENT` is set to 32.
 */
 #ifndef ZR_ENVIRONMENT
-#if (!defined(ZR_ARCH_X86_64) || defined(__ILP32__))                           \
-    && !defined(ZR_ARCH_ITANIUM_64) && !defined(ZR_ARCH_POWERPC_64)            \
-    && !defined(ZR_ARCH_ARM_64)
+#if (!defined(ZRP_ARCH_X86_64) || defined(__ILP32__))                          \
+    && !defined(ZRP_ARCH_ITANIUM_64) && !defined(ZRP_ARCH_POWERPC_64)          \
+    && !defined(ZRP_ARCH_ARM_64)
 #define ZR_ENVIRONMENT 32
 #else
 #define ZR_ENVIRONMENT 64
