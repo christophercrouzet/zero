@@ -10,6 +10,7 @@
 #define ZR_LOGGER_PATCH_VERSION 0
 
 /* @include "partials/platform.h" */
+/* @include "partials/unused.h" */
 
 #ifndef ZRP_LOGGER_SCOPE
 #ifdef ZR_LOGGER_STATIC
@@ -31,14 +32,15 @@ typedef enum ZrLogLevel {
 } ZrLogLevel;
 
 ZRP_LOGGER_SCOPE void
-zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...);
+zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
+    ZRP_MAYBE_UNUSED;
 
 ZRP_LOGGER_SCOPE void
 zrLogVaList(ZrLogLevel level,
             const char *pFile,
             int line,
             const char *pFormat,
-            va_list args);
+            va_list args) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }

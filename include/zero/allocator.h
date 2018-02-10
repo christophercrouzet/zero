@@ -165,6 +165,15 @@ typedef char
 #endif
 #endif /* ZRP_BASIC_TYPES_DEFINED */
 
+#ifndef ZRP_UNUSED_DEFINED
+#define ZRP_UNUSED_DEFINED
+#ifdef __GNUC__
+#define ZRP_MAYBE_UNUSED __attribute__((unused))
+#else
+#define ZRP_MAYBE_UNUSED
+#endif
+#endif /* ZRP_UNUSED_DEFINED */
+
 #ifndef ZRP_ALLOCATOR_SCOPE
 #ifdef ZR_ALLOCATOR_STATIC
 #define ZRP_ALLOCATOR_SCOPE static
@@ -178,22 +187,24 @@ extern "C" {
 #endif
 
 ZRP_ALLOCATOR_SCOPE void *
-zrAllocate(ZrSize size);
+zrAllocate(ZrSize size) ZRP_MAYBE_UNUSED;
 
 ZRP_ALLOCATOR_SCOPE void *
-zrReallocate(void *pOriginal, ZrSize size);
+zrReallocate(void *pOriginal, ZrSize size) ZRP_MAYBE_UNUSED;
 
 ZRP_ALLOCATOR_SCOPE void
-zrFree(void *pMemory);
+zrFree(void *pMemory) ZRP_MAYBE_UNUSED;
 
 ZRP_ALLOCATOR_SCOPE void *
-zrAllocateAligned(ZrSize size, ZrSize alignment);
+zrAllocateAligned(ZrSize size, ZrSize alignment) ZRP_MAYBE_UNUSED;
 
 ZRP_ALLOCATOR_SCOPE void *
-zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment);
+zrReallocateAligned(void *pOriginal,
+                    ZrSize size,
+                    ZrSize alignment) ZRP_MAYBE_UNUSED;
 
 ZRP_ALLOCATOR_SCOPE void
-zrFreeAligned(void *pMemory);
+zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }

@@ -50,6 +50,15 @@
 #endif
 #endif /* ZRP_PLATFORM_DEFINED */
 
+#ifndef ZRP_UNUSED_DEFINED
+#define ZRP_UNUSED_DEFINED
+#ifdef __GNUC__
+#define ZRP_MAYBE_UNUSED __attribute__((unused))
+#else
+#define ZRP_MAYBE_UNUSED
+#endif
+#endif /* ZRP_UNUSED_DEFINED */
+
 #ifndef ZRP_LOGGER_SCOPE
 #ifdef ZR_LOGGER_STATIC
 #define ZRP_LOGGER_SCOPE static
@@ -70,14 +79,15 @@ typedef enum ZrLogLevel {
 } ZrLogLevel;
 
 ZRP_LOGGER_SCOPE void
-zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...);
+zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
+    ZRP_MAYBE_UNUSED;
 
 ZRP_LOGGER_SCOPE void
 zrLogVaList(ZrLogLevel level,
             const char *pFile,
             int line,
             const char *pFormat,
-            va_list args);
+            va_list args) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
