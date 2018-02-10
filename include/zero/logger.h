@@ -114,6 +114,7 @@ zrLogVaList(ZrLogLevel level,
 #define ZRP_LOGGER_COLORING
 #endif
 
+#ifdef ZRP_LOGGER_COLORING
 typedef enum ZrpAnsiColor {
     ZRP_ANSI_COLOR_RESET = 0,
     ZRP_ANSI_COLOR_BLACK = 1,
@@ -133,6 +134,7 @@ typedef enum ZrpAnsiColor {
     ZRP_ANSI_COLOR_ENUM_LAST = ZRP_ANSI_COLOR_BRIGHT_CYAN,
     ZRP_ANSI_COLOR_ENUM_COUNT = ZRP_ANSI_COLOR_ENUM_LAST + 1
 } ZrpAnsiColor;
+#endif /* ZRP_LOGGER_COLORING */
 
 static const char *
 zrpGetLogLevelString(ZrLogLevel level)
@@ -151,6 +153,7 @@ zrpGetLogLevelString(ZrLogLevel level)
     }
 }
 
+#ifdef ZRP_LOGGER_COLORING
 static ZrpAnsiColor
 zrpGetLogLevelColor(ZrLogLevel level)
 {
@@ -208,6 +211,7 @@ zrpGetAnsiColorString(ZrpAnsiColor color)
             return "";
     }
 }
+#endif /* ZRP_LOGGER_COLORING */
 
 ZRP_LOGGER_SCOPE void
 zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
