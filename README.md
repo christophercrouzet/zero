@@ -24,7 +24,7 @@ namely fixed-width integer types and variadic macros.
 
 | library | description | latest version |
 |---------|-------------|----------------|
-**[allocator.h](include/zero/allocator.h)** | Aligned and non-aligned wrappers of malloc/realloc/free | 0.1.1
+**[allocator.h](include/zero/allocator.h)** | Aligned and non-aligned wrappers of malloc/realloc/free | 0.1.0
 **[logger.h](include/zero/logger.h)** | Simple logger with different log levels and colouring | 0.1.0
 
 
