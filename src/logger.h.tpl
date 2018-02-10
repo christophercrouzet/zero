@@ -62,7 +62,7 @@ zrLogVaList(ZrLogLevel level,
 #endif /* ZR_ASSERT */
 
 #if !defined(ZR_LOGGER_NO_COLORING) && defined(ZRP_PLATFORM_UNIX)              \
-    && _POSIX_C_SOURCE >= 1
+    && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
 #include <unistd.h>
 #define ZRP_LOGGER_COLORING
 #endif
