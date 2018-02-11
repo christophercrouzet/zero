@@ -440,7 +440,7 @@ main(int argc, char **ppArgv)
     out = 0;
 
     if (argc != 3) {
-        fprintf(stderr, "Usage:\n  build source destination\n");
+        fprintf(stderr, "Usage:\n  build <source> <destination>\n");
         out = 1;
         goto exit;
     }
