@@ -22,10 +22,10 @@ namely fixed-width integer types and variadic macros.
 ## Libraries
 
 
-| library | description | latest version |
-|---------|-------------|----------------|
-**[allocator.h](include/zero/allocator.h)** | Aligned and non-aligned wrappers of malloc/realloc/free | 0.1.0
-**[logger.h](include/zero/logger.h)** | Simple logger with different log levels and colouring | 0.1.0
+| library | description | latest version | changelog |
+|---------|-------------|----------------|-----------|
+**[allocator.h](include/zero/allocator.h)** | Aligned and non-aligned wrappers of malloc/realloc/free | 0.1.0 | [changelog](changelogs/allocator.md)
+**[logger.h](include/zero/logger.h)** | Simple logger with different log levels and colouring | 0.1.0 | [changelog](changelogs/logger.md)
 
 
 ## FAQ
