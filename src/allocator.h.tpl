@@ -12,7 +12,7 @@
 /* @include "partials/unused.h" */
 
 #ifndef ZRP_ALLOCATOR_SCOPE
-#ifdef ZR_ALLOCATOR_STATIC
+#if defined(ZR_ALLOCATOR_STATIC) || defined(ZR_STATIC)
 #define ZRP_ALLOCATOR_SCOPE static
 #else
 #define ZRP_ALLOCATOR_SCOPE extern
@@ -57,25 +57,41 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 #include <stdint.h>
 #include <string.h>
 
-#ifndef ZR_ASSERT
+#ifndef ZR_ALLOCATOR_ASSERT
+#ifdef ZR_ASSERT
+#define ZR_ALLOCATOR_ASSERT ZR_ASSERT
+#else
 #include <assert.h>
-#define ZR_ASSERT assert
+#define ZR_ALLOCATOR_ASSERT assert
 #endif /* ZR_ASSERT */
+#endif /* ZR_ALLOCATOR_ASSERT */
 
-#ifndef ZR_MALLOC
+#ifndef ZR_ALLOCATOR_MALLOC
+#ifdef ZR_MALLOC
+#define ZR_ALLOCATOR_MALLOC ZR_MALLOC
+#else
 #include <stdlib.h>
-#define ZR_MALLOC malloc
+#define ZR_ALLOCATOR_MALLOC malloc
 #endif /* ZR_MALLOC */
+#endif /* ZR_ALLOCATOR_MALLOC */
 
-#ifndef ZR_REALLOC
+#ifndef ZR_ALLOCATOR_REALLOC
+#ifdef ZR_REALLOC
+#define ZR_ALLOCATOR_REALLOC ZR_REALLOC
+#else
 #include <stdlib.h>
-#define ZR_REALLOC realloc
+#define ZR_ALLOCATOR_REALLOC realloc
 #endif /* ZR_REALLOC */
+#endif /* ZR_ALLOCATOR_REALLOC */
 
-#ifndef ZR_FREE
+#ifndef ZR_ALLOCATOR_FREE
+#ifdef ZR_FREE
+#define ZR_ALLOCATOR_FREE ZR_FREE
+#else
 #include <stdlib.h>
-#define ZR_FREE free
+#define ZR_ALLOCATOR_FREE free
 #endif /* ZR_FREE */
+#endif /* ZR_ALLOCATOR_FREE */
 
 #ifndef ZR_ALLOCATOR_DEBUGGING
 #define ZR_ALLOCATOR_DEBUGGING 0
@@ -165,7 +181,7 @@ zrAllocate(ZrSize size)
         return NULL;
     }
 
-    return ZR_MALLOC((size_t)size);
+    return ZR_ALLOCATOR_MALLOC((size_t)size);
 }
 
 ZRP_ALLOCATOR_SCOPE void *
@@ -180,13 +196,13 @@ zrReallocate(void *pOriginal, ZrSize size)
         return NULL;
     }
 
-    return ZR_REALLOC(pOriginal, (size_t)size);
+    return ZR_ALLOCATOR_REALLOC(pOriginal, (size_t)size);
 }
 
 ZRP_ALLOCATOR_SCOPE void
 zrFree(void *pMemory)
 {
-    ZR_FREE(pMemory);
+    ZR_ALLOCATOR_FREE(pMemory);
 }
 
 ZRP_ALLOCATOR_SCOPE void *
@@ -204,7 +220,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
         alignment = (ZrSize)zrpMinAlignment;
     }
 
-    pBlock = ZR_MALLOC(
+    pBlock = ZR_ALLOCATOR_MALLOC(
         (size_t)(size + alignment - 1 + sizeof(ZrpAlignedBlockHeader)));
     if (pBlock == NULL) {
         return NULL;
@@ -246,12 +262,12 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 
     originalHeader = ((ZrpAlignedBlockHeader *)pOriginal)[-1];
 #if ZR_ALLOCATOR_DEBUGGING
-    ZR_ASSERT(alignment == originalHeader.alignment);
+    ZR_ALLOCATOR_ASSERT(alignment == originalHeader.alignment);
 #endif /* ZR_ALLOCATOR_DEBUGGING */
 
     pOriginalBlock
         = (void *)((unsigned char *)pOriginal - originalHeader.offset);
-    pBlock = ZR_REALLOC(
+    pBlock = ZR_ALLOCATOR_REALLOC(
         pOriginalBlock,
         (size_t)(size + alignment - 1 + sizeof(ZrpAlignedBlockHeader)));
     if (pBlock == NULL) {
@@ -302,7 +318,7 @@ zrFreeAligned(void *pMemory)
     }
 
     pHeader = &((ZrpAlignedBlockHeader *)pMemory)[-1];
-    ZR_FREE((void *)((unsigned char *)pMemory - pHeader->offset));
+    ZR_ALLOCATOR_FREE((void *)((unsigned char *)pMemory - pHeader->offset));
 }
 
 #endif /* ZRP_ALLOCATOR_IMPLEMENTATION */

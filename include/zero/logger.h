@@ -60,7 +60,7 @@
 #endif /* ZRP_UNUSED_DEFINED */
 
 #ifndef ZRP_LOGGER_SCOPE
-#ifdef ZR_LOGGER_STATIC
+#if defined(ZR_LOGGER_STATIC) || defined(ZR_STATIC)
 #define ZRP_LOGGER_SCOPE static
 #else
 #define ZRP_LOGGER_SCOPE extern
@@ -103,10 +103,14 @@ zrLogVaList(ZrLogLevel level,
 #include <stddef.h>
 #include <stdio.h>
 
-#ifndef ZR_ASSERT
+#ifndef ZR_LOGGER_ASSERT
+#ifdef ZR_ASSERT
+#define ZR_LOGGER_ASSERT ZR_ASSERT
+#else
 #include <assert.h>
-#define ZR_ASSERT assert
+#define ZR_LOGGER_ASSERT assert
 #endif /* ZR_ASSERT */
+#endif /* ZR_LOGGER_ASSERT */
 
 #if !defined(ZR_LOGGER_NO_COLORING) && defined(ZRP_PLATFORM_UNIX)              \
     && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
@@ -167,7 +171,7 @@ zrpGetLogLevelColor(ZrLogLevel level)
         case ZR_LOG_LEVEL_ERROR:
             return ZRP_ANSI_COLOR_BRIGHT_RED;
         default:
-            ZR_ASSERT(0);
+            ZR_LOGGER_ASSERT(0);
             return ZRP_ANSI_COLOR_RESET;
     };
 }
@@ -207,7 +211,7 @@ zrpGetAnsiColorString(ZrpAnsiColor color)
         case ZRP_ANSI_COLOR_BRIGHT_CYAN:
             return "\x1b[1;36m";
         default:
-            ZR_ASSERT(0);
+            ZR_LOGGER_ASSERT(0);
             return "";
     }
 }
@@ -218,8 +222,8 @@ zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
 {
     va_list args;
 
-    ZR_ASSERT(pFile != NULL);
-    ZR_ASSERT(pFormat != NULL);
+    ZR_LOGGER_ASSERT(pFile != NULL);
+    ZR_LOGGER_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
     zrLogVaList(level, pFile, line, pFormat, args);
@@ -237,8 +241,8 @@ zrLogVaList(ZrLogLevel level,
     const char *pLevelColorStart;
     const char *pLevelColorEnd;
 
-    ZR_ASSERT(pFile != NULL);
-    ZR_ASSERT(pFormat != NULL);
+    ZR_LOGGER_ASSERT(pFile != NULL);
+    ZR_LOGGER_ASSERT(pFormat != NULL);
 
     pLevelName = zrpGetLogLevelString(level);
 
