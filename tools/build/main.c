@@ -370,9 +370,9 @@ zrProcessIncludeDirectives(const ZrDirective *pHead,
     char *pTo;
     size_t offset;
 
+    assert(pHead != NULL);
     assert(ppBuffer != NULL);
     assert(*ppBuffer != NULL);
-    assert(pOut != NULL);
 
     doIt = 0;
     length = *pBufferSize;
