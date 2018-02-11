@@ -150,11 +150,10 @@ typedef struct ZrpAlignedBlockHeader {
 #endif /* ZR_ALLOCATOR_DEBUGGING */
 } ZrpAlignedBlockHeader;
 
-typedef char zr_invalid_block_header_alignment
+typedef char zrp_invalid_block_header_alignment
     [ZRP_IS_POWER_OF_TWO(ZRP_ALIGNMENT_OF(ZrpAlignedBlockHeader)) ? 1 : -1];
-typedef char
-    zr_invalid_void_pointer_alignment[ZRP_IS_POWER_OF_TWO(sizeof(void *)) ? 1
-                                                                          : -1];
+typedef char zrp_invalid_void_pointer_alignment
+    [ZRP_IS_POWER_OF_TWO(sizeof(void *)) ? 1 : -1];
 
 /*
    Any power of two alignment requested for the user pointer that is greater or

@@ -32,7 +32,7 @@
 #define ZR_ENVIRONMENT 64
 #endif
 #ifdef ZR_IMPLEMENTATION
-typedef char zr_invalid_environment_value
+typedef char zrp_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
 #endif
 #endif /* ZR_ENVIRONMENT */

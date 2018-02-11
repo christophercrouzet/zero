@@ -63,7 +63,7 @@
 #define ZR_ENVIRONMENT 64
 #endif
 #ifdef ZR_IMPLEMENTATION
-typedef char zr_invalid_environment_value
+typedef char zrp_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
 #endif
 #endif /* ZR_ENVIRONMENT */
@@ -129,14 +129,14 @@ typedef unsigned long long ZrUint64;
 #endif
 #endif
 #ifdef ZR_IMPLEMENTATION
-typedef char zr_invalid_int8_type[sizeof(ZrInt8) == 1 ? 1 : -1];
-typedef char zr_invalid_uint8_type[sizeof(ZrUint8) == 1 ? 1 : -1];
-typedef char zr_invalid_int16_type[sizeof(ZrInt16) == 2 ? 1 : -1];
-typedef char zr_invalid_uint16_type[sizeof(ZrUint16) == 2 ? 1 : -1];
-typedef char zr_invalid_int32_type[sizeof(ZrInt32) == 4 ? 1 : -1];
-typedef char zr_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
-typedef char zr_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
-typedef char zr_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
+typedef char zrp_invalid_int8_type[sizeof(ZrInt8) == 1 ? 1 : -1];
+typedef char zrp_invalid_uint8_type[sizeof(ZrUint8) == 1 ? 1 : -1];
+typedef char zrp_invalid_int16_type[sizeof(ZrInt16) == 2 ? 1 : -1];
+typedef char zrp_invalid_uint16_type[sizeof(ZrUint16) == 2 ? 1 : -1];
+typedef char zrp_invalid_int32_type[sizeof(ZrInt32) == 4 ? 1 : -1];
+typedef char zrp_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
+typedef char zrp_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
+typedef char zrp_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
 #endif
 #endif /* ZRP_FIXED_TYPES_DEFINED */
 
@@ -161,7 +161,7 @@ typedef ZrUint64 ZrSize;
 #endif
 #ifdef ZR_IMPLEMENTATION
 typedef char
-    zr_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
+    zrp_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
 #endif
 #endif /* ZRP_BASIC_TYPES_DEFINED */
 
@@ -313,11 +313,10 @@ typedef struct ZrpAlignedBlockHeader {
 #endif /* ZR_ALLOCATOR_DEBUGGING */
 } ZrpAlignedBlockHeader;
 
-typedef char zr_invalid_block_header_alignment
+typedef char zrp_invalid_block_header_alignment
     [ZRP_IS_POWER_OF_TWO(ZRP_ALIGNMENT_OF(ZrpAlignedBlockHeader)) ? 1 : -1];
-typedef char
-    zr_invalid_void_pointer_alignment[ZRP_IS_POWER_OF_TWO(sizeof(void *)) ? 1
-                                                                          : -1];
+typedef char zrp_invalid_void_pointer_alignment
+    [ZRP_IS_POWER_OF_TWO(sizeof(void *)) ? 1 : -1];
 
 /*
    Any power of two alignment requested for the user pointer that is greater or
