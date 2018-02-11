@@ -19,7 +19,7 @@ CPPFLAGS := -DNDEBUG -O3 \
             -Wunreachable-code -Wwrite-strings
 PREREQFLAGS := -MMD -MP
 LDFLAGS :=
-LDLIBS := 
+LDLIBS :=
 
 COMPILE.c = $(CC) $(PREREQFLAGS) $(CPPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 LINK.o = $(CC) $(LDFLAGS) $(TARGET_ARCH)
