@@ -21,7 +21,7 @@ TIDY_FILES :=
 
 # Forward a rule to the generated Makefile.
 # $(1): rule.
-define zr_forward_rule =
+define zr_forward_rule
 $(MAKE) -C $(OUT_DIR) -s $(1)
 endef
 
