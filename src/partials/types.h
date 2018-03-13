@@ -57,7 +57,7 @@ typedef ZR_UINT64 ZrUint64;
 #else
 typedef unsigned long long ZrUint64;
 #endif
-#endif
+#endif /* ZR_USE_STD_FIXED_TYPES */
 #ifdef ZR_IMPLEMENTATION
 typedef char zrp_invalid_int8_type[sizeof(ZrInt8) == 1 ? 1 : -1];
 typedef char zrp_invalid_uint8_type[sizeof(ZrUint8) == 1 ? 1 : -1];
