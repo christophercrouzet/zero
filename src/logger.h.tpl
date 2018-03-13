@@ -7,7 +7,7 @@
 
 #define ZR_LOGGER_MAJOR_VERSION 0
 #define ZR_LOGGER_MINOR_VERSION 1
-#define ZR_LOGGER_PATCH_VERSION 0
+#define ZR_LOGGER_PATCH_VERSION 1
 
 /* @include "partials/platform.h" */
 /* @include "partials/unused.h" */
