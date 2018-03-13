@@ -43,7 +43,7 @@ platforms, the macro `ZR_USE_STD_FIXED_TYPES` can be defined, or each type can
 be overridden individually.
 
 The same applies to redefining `size_t`—on almost all platforms the size of
-`size_t` equals the targetted architecture, that is either 32 or 64 bits. Here
+`size_t` equals the targeted architecture, that is either 32 or 64 bits. Here
 again, if that's not enough then it's still possible to define
 the macro `ZR_USE_STD_BASIC_TYPES`.
 
