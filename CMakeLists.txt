@@ -4,8 +4,6 @@ project(Zero
     VERSION 0.2.0
     LANGUAGES C)
 
-string(TOLOWER ${PROJECT_NAME} ZR_PROJECT_NAME)
-
 # ------------------------------------------------------------------------------
 
 include(CMakePackageConfigHelpers)
