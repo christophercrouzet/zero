@@ -65,7 +65,7 @@
 #else
 #define ZRP_LOGGER_SCOPE extern
 #endif
-#endif
+#endif /* ZRP_LOGGER_SCOPE */
 
 #ifdef __cplusplus
 extern "C" {

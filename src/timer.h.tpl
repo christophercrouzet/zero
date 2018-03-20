@@ -20,7 +20,7 @@
 #else
 #define ZRP_TIMER_SCOPE extern
 #endif
-#endif
+#endif /* ZRP_TIMER_SCOPE */
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 

@@ -17,7 +17,7 @@
 #else
 #define ZRP_ALLOCATOR_SCOPE extern
 #endif
-#endif
+#endif /* ZRP_ALLOCATOR_SCOPE */
 
 #ifdef __cplusplus
 extern "C" {

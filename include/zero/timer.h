@@ -146,7 +146,7 @@ typedef ZR_UINT64 ZrUint64;
 #else
 typedef unsigned long long ZrUint64;
 #endif
-#endif
+#endif /* ZR_USE_STD_FIXED_TYPES */
 #ifdef ZR_IMPLEMENTATION
 typedef char zrp_invalid_int8_type[sizeof(ZrInt8) == 1 ? 1 : -1];
 typedef char zrp_invalid_uint8_type[sizeof(ZrUint8) == 1 ? 1 : -1];
@@ -204,7 +204,7 @@ typedef enum ZrResult { ZR_SUCCESS = 0, ZR_ERROR = -1 } ZrResult;
 #else
 #define ZRP_TIMER_SCOPE extern
 #endif
-#endif
+#endif /* ZRP_TIMER_SCOPE */
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 
