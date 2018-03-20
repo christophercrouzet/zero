@@ -20,8 +20,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
-    OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "CLANG")
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"
+    OR "${CMAKE_C_COMPILER_ID}" STREQUAL "CLANG")
     add_compile_options(
         -Wpedantic -Wall -Wextra -Waggregate-return -Wcast-align -Wcast-qual
         -Wconversion -Wfloat-equal -Wpointer-arith -Wshadow -Wstrict-overflow=5
