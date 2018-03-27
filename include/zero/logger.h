@@ -67,16 +67,16 @@
 #endif
 #endif /* ZRP_LOGGER_SCOPE */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum ZrLogLevel {
     ZR_LOG_LEVEL_DEBUG = 0,
     ZR_LOG_LEVEL_INFO = 1,
     ZR_LOG_LEVEL_WARNING = 2,
     ZR_LOG_LEVEL_ERROR = 3
 } ZrLogLevel;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 ZRP_LOGGER_SCOPE void
 zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
