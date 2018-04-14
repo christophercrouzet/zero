@@ -306,17 +306,17 @@ struct ZrpAllocatorAlignmentOfHelper {
    the beginning of the block.
 */
 
-typedef struct ZrpAllocatorAlignedBlockHeader {
+typedef struct ZrpAllocatorAlignedHeader {
     ptrdiff_t offset;
     size_t size;
 #if ZR_ALLOCATOR_DEBUGGING
     size_t alignment;
 #endif /* ZR_ALLOCATOR_DEBUGGING */
-} ZrpAllocatorAlignedBlockHeader;
+} ZrpAllocatorAlignedHeader;
 
-typedef char zrp_allocator_invalid_block_header_alignment
+typedef char zrp_allocator_invalid_aligned_header_alignment
     [ZRP_ALLOCATOR_IS_POWER_OF_TWO(
-         ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedBlockHeader))
+         ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader))
          ? 1
          : -1];
 typedef char zrp_allocator_invalid_void_pointer_alignment
@@ -329,9 +329,8 @@ typedef char zrp_allocator_invalid_void_pointer_alignment
    and is also guaranteed to provide correct alignment for the block header.
 */
 static const size_t zrpAllocatorMinAlignment
-    = ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedBlockHeader)
-              > sizeof(void *)
-          ? ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedBlockHeader)
+    = ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader) > sizeof(void *)
+          ? ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
 static int
@@ -377,7 +376,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
     void *pOut;
     void *pBlock;
-    ZrpAllocatorAlignedBlockHeader *pHeader;
+    ZrpAllocatorAlignedHeader *pHeader;
 
     if (size == 0 || !zrpAllocatorIsPowerOfTwo(alignment)) {
         return NULL;
@@ -387,17 +386,17 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
         alignment = (ZrSize)zrpAllocatorMinAlignment;
     }
 
-    pBlock = ZR_ALLOCATOR_MALLOC((size_t)(
-        size + alignment - 1 + sizeof(ZrpAllocatorAlignedBlockHeader)));
+    pBlock = ZR_ALLOCATOR_MALLOC(
+        (size_t)(size + alignment - 1 + sizeof(ZrpAllocatorAlignedHeader)));
     if (pBlock == NULL) {
         return NULL;
     }
 
     pOut = (void *)((uintptr_t)((unsigned char *)pBlock + alignment - 1
-                                + sizeof(ZrpAllocatorAlignedBlockHeader))
+                                + sizeof(ZrpAllocatorAlignedHeader))
                     & ~(uintptr_t)(alignment - 1));
 
-    pHeader = &((ZrpAllocatorAlignedBlockHeader *)pOut)[-1];
+    pHeader = &((ZrpAllocatorAlignedHeader *)pOut)[-1];
     pHeader->offset = (unsigned char *)pOut - (unsigned char *)pBlock;
     pHeader->size = size;
 #if ZR_ALLOCATOR_DEBUGGING
@@ -411,10 +410,10 @@ ZRP_ALLOCATOR_SCOPE void *
 zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 {
     void *pOut;
-    ZrpAllocatorAlignedBlockHeader originalHeader;
+    ZrpAllocatorAlignedHeader originalHeader;
     void *pOriginalBlock;
     void *pBlock;
-    ZrpAllocatorAlignedBlockHeader *pHeader;
+    ZrpAllocatorAlignedHeader *pHeader;
 
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);
@@ -429,7 +428,7 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
         alignment = (ZrSize)zrpAllocatorMinAlignment;
     }
 
-    originalHeader = ((ZrpAllocatorAlignedBlockHeader *)pOriginal)[-1];
+    originalHeader = ((ZrpAllocatorAlignedHeader *)pOriginal)[-1];
 #if ZR_ALLOCATOR_DEBUGGING
     ZR_ALLOCATOR_ASSERT(alignment == originalHeader.alignment);
 #endif /* ZR_ALLOCATOR_DEBUGGING */
@@ -438,23 +437,22 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
         = (void *)((unsigned char *)pOriginal - originalHeader.offset);
     pBlock = ZR_ALLOCATOR_REALLOC(
         pOriginalBlock,
-        (size_t)(size + alignment - 1
-                 + sizeof(ZrpAllocatorAlignedBlockHeader)));
+        (size_t)(size + alignment - 1 + sizeof(ZrpAllocatorAlignedHeader)));
     if (pBlock == NULL) {
         return NULL;
     }
 
     if (pBlock == pOriginalBlock) {
         /* `realloc()` expanded the block in place. */
-        ((ZrpAllocatorAlignedBlockHeader *)pOriginal)[-1].size = size;
+        ((ZrpAllocatorAlignedHeader *)pOriginal)[-1].size = size;
         return pOriginal;
     }
 
     pOut = (void *)((uintptr_t)((unsigned char *)pBlock + alignment - 1
-                                + sizeof(ZrpAllocatorAlignedBlockHeader))
+                                + sizeof(ZrpAllocatorAlignedHeader))
                     & ~(uintptr_t)(alignment - 1));
 
-    pHeader = &((ZrpAllocatorAlignedBlockHeader *)pOut)[-1];
+    pHeader = &((ZrpAllocatorAlignedHeader *)pOut)[-1];
     pHeader->offset = (unsigned char *)pOut - (unsigned char *)pBlock;
     pHeader->size = size;
 
@@ -476,13 +474,13 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 ZRP_ALLOCATOR_SCOPE void
 zrFreeAligned(void *pMemory)
 {
-    ZrpAllocatorAlignedBlockHeader *pHeader;
+    ZrpAllocatorAlignedHeader *pHeader;
 
     if (pMemory == NULL) {
         return;
     }
 
-    pHeader = &((ZrpAllocatorAlignedBlockHeader *)pMemory)[-1];
+    pHeader = &((ZrpAllocatorAlignedHeader *)pMemory)[-1];
     ZR_ALLOCATOR_FREE((void *)((unsigned char *)pMemory - pHeader->offset));
 }
 
