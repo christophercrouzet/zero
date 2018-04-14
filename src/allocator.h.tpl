@@ -103,10 +103,10 @@ struct ZrpAllocatorAlignmentOfHelper {
     char first;
     T second;
 };
-#define ZRP_ALLOCATOR_ALIGNMENT_OF(type)                                       \
+#define ZRP_ALLOCATOR_GET_ALIGNMENT_OF(type)                                   \
     offsetof(ZrpAllocatorAlignmentOfHelper<type>, second)
 #else
-#define ZRP_ALLOCATOR_ALIGNMENT_OF(type)                                       \
+#define ZRP_ALLOCATOR_GET_ALIGNMENT_OF(type)                                   \
     offsetof(                                                                  \
         struct {                                                               \
             char first;                                                        \
@@ -153,7 +153,7 @@ typedef struct ZrpAllocatorAlignedHeader {
 
 typedef char zrp_allocator_invalid_aligned_header_alignment
     [ZRP_ALLOCATOR_IS_POWER_OF_TWO(
-         ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader))
+         ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader))
          ? 1
          : -1];
 typedef char zrp_allocator_invalid_void_pointer_alignment
@@ -166,8 +166,8 @@ typedef char zrp_allocator_invalid_void_pointer_alignment
    and is also guaranteed to provide correct alignment for the block header.
 */
 static const size_t zrpAllocatorMinAlignment
-    = ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader) > sizeof(void *)
-          ? ZRP_ALLOCATOR_ALIGNMENT_OF(ZrpAllocatorAlignedHeader)
+    = ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader) > sizeof(void *)
+          ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
 static int
