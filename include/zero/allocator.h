@@ -410,9 +410,11 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 ZRP_ALLOCATOR_SCOPE void *
 zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 {
+    void *pOut;
     ZrpAllocatorAlignedBlockHeader originalHeader;
     void *pOriginalBlock;
     void *pBlock;
+    ZrpAllocatorAlignedBlockHeader *pHeader;
 
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);
@@ -448,32 +450,27 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
         return pOriginal;
     }
 
-    {
-        void *pOut;
-        ZrpAllocatorAlignedBlockHeader *pHeader;
+    pOut = (void *)((uintptr_t)((unsigned char *)pBlock + alignment - 1
+                                + sizeof(ZrpAllocatorAlignedBlockHeader))
+                    & ~(uintptr_t)(alignment - 1));
 
-        pOut = (void *)((uintptr_t)((unsigned char *)pBlock + alignment - 1
-                                    + sizeof(ZrpAllocatorAlignedBlockHeader))
-                        & ~(uintptr_t)(alignment - 1));
+    pHeader = &((ZrpAllocatorAlignedBlockHeader *)pOut)[-1];
+    pHeader->offset = (unsigned char *)pOut - (unsigned char *)pBlock;
+    pHeader->size = size;
 
-        pHeader = &((ZrpAllocatorAlignedBlockHeader *)pOut)[-1];
-        pHeader->offset = (unsigned char *)pOut - (unsigned char *)pBlock;
-        pHeader->size = size;
-
-        if (pHeader->offset == originalHeader.offset) {
-            /*
-               `realloc()` allocated a new block that is still correctly
-               aligned.
-            */
-            return pOut;
-        }
-
-        memmove(pOut,
-                (void *)((unsigned char *)pBlock + originalHeader.offset),
-                originalHeader.size);
-
+    if (pHeader->offset == originalHeader.offset) {
+        /*
+           `realloc()` allocated a new block that is still correctly
+           aligned.
+        */
         return pOut;
     }
+
+    memmove(pOut,
+            (void *)((unsigned char *)pBlock + originalHeader.offset),
+            originalHeader.size);
+
+    return pOut;
 }
 
 ZRP_ALLOCATOR_SCOPE void
