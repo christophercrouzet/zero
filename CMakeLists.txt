@@ -48,9 +48,9 @@ zr_add_library(timer)
 
 set(ZR_TOOL_TARGETS)
 
-macro(zr_add_tool target)
+macro(zr_add_tool)
     set(ZR_ADD_TOOL_OPTIONS)
-    set(ZR_ADD_TOOL_SINGLE_VALUE_ARGS)
+    set(ZR_ADD_TOOL_SINGLE_VALUE_ARGS NAME)
     set(ZR_ADD_TOOL_MULTI_VALUE_ARGS FILES)
     cmake_parse_arguments(
         ZR_ADD_TOOL
@@ -59,15 +59,16 @@ macro(zr_add_tool target)
         "${ZR_ADD_TOOL_MULTI_VALUE_ARGS}"
         ${ARGN})
 
-    add_executable(tool-${target} ${ZR_ADD_TOOL_FILES})
-    set_target_properties(tool-${target}
+    add_executable(tool-${ZR_ADD_TOOL_NAME} ${ZR_ADD_TOOL_FILES})
+    set_target_properties(tool-${ZR_ADD_TOOL_NAME}
         PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY bin/tools
-            OUTPUT_NAME ${target})
-    list(APPEND ZR_TOOL_TARGETS tool-${target})
+            OUTPUT_NAME ${ZR_ADD_TOOL_NAME})
+    list(APPEND ZR_TOOL_TARGETS tool-${ZR_ADD_TOOL_NAME})
 endmacro()
 
-zr_add_tool(build
+zr_add_tool(
+    NAME build
     FILES tools/build/main.c)
 
 add_custom_target(tools DEPENDS ${ZR_TOOL_TARGETS})
