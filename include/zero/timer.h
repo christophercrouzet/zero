@@ -328,7 +328,8 @@ zrGetRealTime(ZrUint64 *pTime)
         struct timespec time;
 
         if (clock_gettime(ZRP_TIMER_CLOCK_ID, &time) == 0) {
-            *pTime = (ZrUint64)time.tv_sec * 1000000000ull + time.tv_nsec;
+            *pTime = (ZrUint64)time.tv_sec * 1000000000ull
+                     + (ZrUint64)time.tv_nsec;
             return ZR_SUCCESS;
         }
     }
