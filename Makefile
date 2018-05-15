@@ -45,8 +45,8 @@ tools: $(OUT_DIR)/Makefile
 .PHONY: tool-build tools
 
 TOOLS := $(notdir $(wildcard tools/*))
-FORMAT_FILES += $(foreach _x,tools/$(TOOLS),$(wildcard $(_x)/*.[ch]))
-TIDY_FILES += $(foreach _x,tools/$(TOOLS),$(wildcard $(_x)/*.[ch]))
+FORMAT_FILES += $(foreach _x,$(TOOLS),$(wildcard tools/$(_x)/*.[ch]))
+TIDY_FILES += $(foreach _x,$(TOOLS),$(wildcard tools/$(_x)/*.[ch]))
 
 # ------------------------------------------------------------------------------
 
