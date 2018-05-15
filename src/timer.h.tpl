@@ -12,7 +12,7 @@
 /* @include "partials/types.h" */
 /* @include "partials/unused.h" */
 
-/* @include "partials/result.h" */
+/* @include "partials/status.h" */
 
 #ifndef ZRP_TIMER_SCOPE
 #if defined(ZR_TIMER_STATIC) || defined(ZR_STATIC)
@@ -33,10 +33,10 @@ typedef struct ZrCpuTimes {
 extern "C" {
 #endif
 
-ZRP_TIMER_SCOPE ZrResult
+ZRP_TIMER_SCOPE ZrStatus
 zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
 
-ZRP_TIMER_SCOPE ZrResult
+ZRP_TIMER_SCOPE ZrStatus
 zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
@@ -88,7 +88,7 @@ typedef char zrp_timer_unsupported_platform[-1];
     than 2^53, which corresponds to approximatively 104 days.
 */
 
-ZRP_TIMER_SCOPE ZrResult
+ZRP_TIMER_SCOPE ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
     ZR_TIMER_ASSERT(pTime != NULL);
@@ -165,7 +165,7 @@ zrGetRealTime(ZrUint64 *pTime)
     return ZR_ERROR;
 }
 
-ZRP_TIMER_SCOPE ZrResult
+ZRP_TIMER_SCOPE ZrStatus
 zrGetCpuTimes(ZrCpuTimes *pTimes)
 {
     ZR_TIMER_ASSERT(pTimes != NULL);
