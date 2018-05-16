@@ -22,7 +22,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size) ZRP_MAYBE_UNUSED;
@@ -46,7 +46,7 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* ZERO_ALLOCATOR_H */
 
@@ -98,7 +98,7 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 #define ZRP_ALLOCATOR_DEBUGGING 1
 #else
 #define ZRP_ALLOCATOR_DEBUGGING 0
-#endif
+#endif /* ZR_ALLOCATOR_ENABLE_DEBUGGING */
 
 #ifdef __cplusplus
 template<typename T>
@@ -333,5 +333,5 @@ zrFreeAligned(void *pBuffer)
         ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(pBuffer, pHeader->offset));
 }
 
-#endif /* ZRP_ALLOCATOR_IMPLEMENTATION */
-#endif /* ZR_IMPLEMENTATION */
+#endif /* ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED */
+#endif /* ZR_DEFINE_IMPLEMENTATION */

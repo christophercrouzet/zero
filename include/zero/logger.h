@@ -77,7 +77,7 @@ typedef enum ZrLogLevel {
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 ZRP_LOGGER_LINKAGE void
 zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
@@ -92,7 +92,7 @@ zrLogVaList(ZrLogLevel level,
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* ZERO_LOGGER_H */
 
@@ -262,7 +262,7 @@ zrLogVaList(ZrLogLevel level,
     }
 #else
     pLevelColorStart = pLevelColorEnd = "";
-#endif
+#endif /* ZRP_LOGGER_COLORING */
 
     fprintf(stderr,
             "%s:%d: %s%s%s: ",
@@ -274,5 +274,5 @@ zrLogVaList(ZrLogLevel level,
     vfprintf(stderr, pFormat, args);
 }
 
-#endif /* ZRP_LOGGER_IMPLEMENTATION */
-#endif /* ZR_IMPLEMENTATION */
+#endif /* ZRP_LOGGER_IMPLEMENTATION_DEFINED */
+#endif /* ZR_DEFINE_IMPLEMENTATION */

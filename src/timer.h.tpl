@@ -32,7 +32,7 @@ typedef struct ZrCpuTimes {
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 ZRP_TIMER_LINKAGE ZrStatus
 zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
@@ -42,7 +42,7 @@ zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* ZERO_TIMER_H */
 
@@ -214,5 +214,5 @@ zrGetCpuTimes(ZrCpuTimes *pTimes)
     return ZR_ERROR;
 }
 
-#endif /* ZRP_TIMER_IMPLEMENTATION */
-#endif /* ZR_IMPLEMENTATION */
+#endif /* ZRP_TIMER_IMPLEMENTATION_DEFINED */
+#endif /* ZR_DEFINE_IMPLEMENTATION */

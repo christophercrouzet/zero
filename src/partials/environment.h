@@ -34,5 +34,5 @@
 #ifdef ZR_DEFINE_IMPLEMENTATION
 typedef char zrp_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZR_ENVIRONMENT */

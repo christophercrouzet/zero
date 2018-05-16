@@ -65,7 +65,7 @@
 #ifdef ZR_DEFINE_IMPLEMENTATION
 typedef char zrp_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZR_ENVIRONMENT */
 
 #ifndef ZRP_FIXED_TYPES_DEFINED
@@ -137,7 +137,7 @@ typedef char zrp_invalid_int32_type[sizeof(ZrInt32) == 4 ? 1 : -1];
 typedef char zrp_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
 typedef char zrp_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
 typedef char zrp_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZRP_FIXED_TYPES_DEFINED */
 
 #ifndef ZRP_BASIC_TYPES_DEFINED
@@ -162,7 +162,7 @@ typedef ZrUint64 ZrSize;
 #ifdef ZR_DEFINE_IMPLEMENTATION
 typedef char
     zrp_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZRP_BASIC_TYPES_DEFINED */
 
 #ifndef ZRP_UNUSED_DEFINED
@@ -185,7 +185,7 @@ typedef char
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size) ZRP_MAYBE_UNUSED;
@@ -209,7 +209,7 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* ZERO_ALLOCATOR_H */
 
@@ -261,7 +261,7 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 #define ZRP_ALLOCATOR_DEBUGGING 1
 #else
 #define ZRP_ALLOCATOR_DEBUGGING 0
-#endif
+#endif /* ZR_ALLOCATOR_ENABLE_DEBUGGING */
 
 #ifdef __cplusplus
 template<typename T>
@@ -496,5 +496,5 @@ zrFreeAligned(void *pBuffer)
         ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(pBuffer, pHeader->offset));
 }
 
-#endif /* ZRP_ALLOCATOR_IMPLEMENTATION */
-#endif /* ZR_IMPLEMENTATION */
+#endif /* ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED */
+#endif /* ZR_DEFINE_IMPLEMENTATION */

@@ -65,7 +65,7 @@
 #ifdef ZR_DEFINE_IMPLEMENTATION
 typedef char zrp_invalid_environment_value
     [ZR_ENVIRONMENT == 32 || ZR_ENVIRONMENT == 64 ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZR_ENVIRONMENT */
 
 #ifndef ZRP_PLATFORM_DEFINED
@@ -156,7 +156,7 @@ typedef char zrp_invalid_int32_type[sizeof(ZrInt32) == 4 ? 1 : -1];
 typedef char zrp_invalid_uint32_type[sizeof(ZrUint32) == 4 ? 1 : -1];
 typedef char zrp_invalid_int64_type[sizeof(ZrInt64) == 8 ? 1 : -1];
 typedef char zrp_invalid_uint64_type[sizeof(ZrUint64) == 8 ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZRP_FIXED_TYPES_DEFINED */
 
 #ifndef ZRP_BASIC_TYPES_DEFINED
@@ -181,7 +181,7 @@ typedef ZrUint64 ZrSize;
 #ifdef ZR_DEFINE_IMPLEMENTATION
 typedef char
     zrp_invalid_size_type[sizeof(ZrSize) == sizeof sizeof(void *) ? 1 : -1];
-#endif
+#endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZRP_BASIC_TYPES_DEFINED */
 
 #ifndef ZRP_UNUSED_DEFINED
@@ -216,7 +216,7 @@ typedef struct ZrCpuTimes {
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 ZRP_TIMER_LINKAGE ZrStatus
 zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
@@ -226,7 +226,7 @@ zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* ZERO_TIMER_H */
 
@@ -398,5 +398,5 @@ zrGetCpuTimes(ZrCpuTimes *pTimes)
     return ZR_ERROR;
 }
 
-#endif /* ZRP_TIMER_IMPLEMENTATION */
-#endif /* ZR_IMPLEMENTATION */
+#endif /* ZRP_TIMER_IMPLEMENTATION_DEFINED */
+#endif /* ZR_DEFINE_IMPLEMENTATION */
