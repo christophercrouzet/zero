@@ -11,36 +11,37 @@
 /* @include "partials/types.h" */
 /* @include "partials/unused.h" */
 
-#ifndef ZRP_ALLOCATOR_SCOPE
-#if defined(ZR_ALLOCATOR_STATIC) || defined(ZR_STATIC)
-#define ZRP_ALLOCATOR_SCOPE static
+#ifndef ZRP_ALLOCATOR_LINKAGE
+#if defined(ZR_ALLOCATOR_SPECIFY_INTERNAL_LINKAGE)                             \
+    || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
+#define ZRP_ALLOCATOR_LINKAGE static
 #else
-#define ZRP_ALLOCATOR_SCOPE extern
+#define ZRP_ALLOCATOR_LINKAGE extern
 #endif
-#endif /* ZRP_ALLOCATOR_SCOPE */
+#endif /* ZRP_ALLOCATOR_LINKAGE */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size) ZRP_MAYBE_UNUSED;
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrReallocate(void *pOriginal, ZrSize size) ZRP_MAYBE_UNUSED;
 
-ZRP_ALLOCATOR_SCOPE void
+ZRP_ALLOCATOR_LINKAGE void
 zrFree(void *pMemory) ZRP_MAYBE_UNUSED;
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment) ZRP_MAYBE_UNUSED;
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginal,
                     ZrSize size,
                     ZrSize alignment) ZRP_MAYBE_UNUSED;
 
-ZRP_ALLOCATOR_SCOPE void
+ZRP_ALLOCATOR_LINKAGE void
 zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
@@ -49,9 +50,9 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 
 #endif /* ZERO_ALLOCATOR_H */
 
-#ifdef ZR_IMPLEMENTATION
-#ifndef ZRP_ALLOCATOR_IMPLEMENTATION
-#define ZRP_ALLOCATOR_IMPLEMENTATION
+#ifdef ZR_DEFINE_IMPLEMENTATION
+#ifndef ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED
+#define ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED
 
 #include <stddef.h>
 #include <stdint.h>
@@ -93,8 +94,10 @@ zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
 #endif /* ZR_FREE */
 #endif /* ZR_ALLOCATOR_FREE */
 
-#ifndef ZR_ALLOCATOR_DEBUGGING
-#define ZR_ALLOCATOR_DEBUGGING 0
+#ifdef ZR_ALLOCATOR_ENABLE_DEBUGGING
+#define ZRP_ALLOCATOR_DEBUGGING 1
+#else
+#define ZRP_ALLOCATOR_DEBUGGING 0
 #endif
 
 #ifdef __cplusplus
@@ -158,9 +161,9 @@ struct ZrpAllocatorAlignmentOfHelper {
 typedef struct ZrpAllocatorAlignedHeader {
     ptrdiff_t offset;
     size_t size;
-#if ZR_ALLOCATOR_DEBUGGING
+#if ZRP_ALLOCATOR_DEBUGGING
     size_t alignment;
-#endif /* ZR_ALLOCATOR_DEBUGGING */
+#endif /* ZRP_ALLOCATOR_DEBUGGING */
 } ZrpAllocatorAlignedHeader;
 
 typedef char zrp_allocator_invalid_aligned_header_alignment
@@ -189,7 +192,7 @@ zrpAllocatorIsPowerOfTwo(ZrSize x)
     return (x != 0) && !(x & (x - 1));
 }
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size)
 {
     if (size == 0) {
@@ -199,7 +202,7 @@ zrAllocate(ZrSize size)
     return ZR_ALLOCATOR_MALLOC((size_t)size);
 }
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrReallocate(void *pOriginalBuffer, ZrSize size)
 {
     if (pOriginalBuffer == NULL) {
@@ -214,13 +217,13 @@ zrReallocate(void *pOriginalBuffer, ZrSize size)
     return ZR_ALLOCATOR_REALLOC(pOriginalBuffer, (size_t)size);
 }
 
-ZRP_ALLOCATOR_SCOPE void
+ZRP_ALLOCATOR_LINKAGE void
 zrFree(void *pBuffer)
 {
     ZR_ALLOCATOR_FREE(pBuffer);
 }
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
@@ -246,14 +249,14 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     pHeader = &ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pBuffer);
     pHeader->offset = (unsigned char *)pBuffer - (unsigned char *)pBlock;
     pHeader->size = size;
-#if ZR_ALLOCATOR_DEBUGGING
+#if ZRP_ALLOCATOR_DEBUGGING
     pHeader->alignment = (size_t)alignment;
-#endif /* ZR_ALLOCATOR_DEBUGGING */
+#endif /* ZRP_ALLOCATOR_DEBUGGING */
 
     return pBuffer;
 }
 
-ZRP_ALLOCATOR_SCOPE void *
+ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
@@ -276,9 +279,9 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
     }
 
     originalHeader = ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pOriginalBuffer);
-#if ZR_ALLOCATOR_DEBUGGING
+#if ZRP_ALLOCATOR_DEBUGGING
     ZR_ALLOCATOR_ASSERT(alignment == originalHeader.alignment);
-#endif /* ZR_ALLOCATOR_DEBUGGING */
+#endif /* ZRP_ALLOCATOR_DEBUGGING */
 
     pOriginalBlock = ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(pOriginalBuffer,
                                                      originalHeader.offset);
@@ -316,7 +319,7 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
     return pBuffer;
 }
 
-ZRP_ALLOCATOR_SCOPE void
+ZRP_ALLOCATOR_LINKAGE void
 zrFreeAligned(void *pBuffer)
 {
     ZrpAllocatorAlignedHeader *pHeader;

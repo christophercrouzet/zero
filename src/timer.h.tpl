@@ -14,13 +14,14 @@
 
 /* @include "partials/status.h" */
 
-#ifndef ZRP_TIMER_SCOPE
-#if defined(ZR_TIMER_STATIC) || defined(ZR_STATIC)
-#define ZRP_TIMER_SCOPE static
+#ifndef ZRP_TIMER_LINKAGE
+#if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
+    || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
+#define ZRP_TIMER_LINKAGE static
 #else
-#define ZRP_TIMER_SCOPE extern
+#define ZRP_TIMER_LINKAGE extern
 #endif
-#endif /* ZRP_TIMER_SCOPE */
+#endif /* ZRP_TIMER_LINKAGE */
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 
@@ -33,10 +34,10 @@ typedef struct ZrCpuTimes {
 extern "C" {
 #endif
 
-ZRP_TIMER_SCOPE ZrStatus
+ZRP_TIMER_LINKAGE ZrStatus
 zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
 
-ZRP_TIMER_SCOPE ZrStatus
+ZRP_TIMER_LINKAGE ZrStatus
 zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
@@ -45,9 +46,9 @@ zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #endif /* ZERO_TIMER_H */
 
-#ifdef ZR_IMPLEMENTATION
-#ifndef ZRP_TIMER_IMPLEMENTATION
-#define ZRP_TIMER_IMPLEMENTATION
+#ifdef ZR_DEFINE_IMPLEMENTATION
+#ifndef ZRP_TIMER_IMPLEMENTATION_DEFINED
+#define ZRP_TIMER_IMPLEMENTATION_DEFINED
 
 #ifndef ZR_TIMER_ASSERT
 #ifdef ZR_ASSERT
@@ -88,7 +89,7 @@ typedef char zrp_timer_unsupported_platform[-1];
     than 2^53, which corresponds to approximatively 104 days.
 */
 
-ZRP_TIMER_SCOPE ZrStatus
+ZRP_TIMER_LINKAGE ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
     ZR_TIMER_ASSERT(pTime != NULL);
@@ -165,7 +166,7 @@ zrGetRealTime(ZrUint64 *pTime)
     return ZR_ERROR;
 }
 
-ZRP_TIMER_SCOPE ZrStatus
+ZRP_TIMER_LINKAGE ZrStatus
 zrGetCpuTimes(ZrCpuTimes *pTimes)
 {
     ZR_TIMER_ASSERT(pTimes != NULL);

@@ -11,7 +11,8 @@ namely fixed-width integer types and variadic macros.
 
 * mostly C89-compliant
 * headers don't include anything by default <sup>[1]</sup>
-* implementations are included upon defining the `ZR_IMPLEMENTATION` macro
+* implementations are included upon defining the `ZR_DEFINE_IMPLEMENTATION`
+  macro
 * each library is a standalone single file to ease integration into projects
 * simple
 
