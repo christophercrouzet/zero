@@ -244,13 +244,13 @@ zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#elif defined(ZRP_PLATFORM_DARWIN)
+#include <mach/mach_time.h>
+#include <sys/resource.h>
 #elif defined(ZRP_PLATFORM_UNIX)
 #include <sys/resource.h>
-#include <sys/time.h>
+#if _POSIX_C_SOURCE >= 199309L
 #include <time.h>
-#if defined(ZRP_PLATFORM_DARWIN)
-#include <mach/mach_time.h>
-#elif _POSIX_C_SOURCE >= 199309L
 #define ZRP_TIMER_USE_CLOCK_GETTIME
 #if defined(CLOCK_MONOTONIC_RAW)
 #define ZRP_TIMER_CLOCK_ID CLOCK_MONOTONIC_RAW
@@ -259,6 +259,8 @@ zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 #else
 #define ZRP_TIMER_CLOCK_ID CLOCK_REALTIME
 #endif
+#else
+#include <sys/time.h>
 #endif
 #else
 typedef char zrp_timer_unsupported_platform[-1];
