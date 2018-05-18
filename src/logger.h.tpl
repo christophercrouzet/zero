@@ -23,7 +23,8 @@ enum ZrLogLevel {
     ZR_LOG_LEVEL_ERROR = 0,
     ZR_LOG_LEVEL_WARNING = 1,
     ZR_LOG_LEVEL_INFO = 2,
-    ZR_LOG_LEVEL_DEBUG = 3
+    ZR_LOG_LEVEL_TRACE = 3,
+    ZR_LOG_LEVEL_DEBUG = 4
 };
 
 #ifdef __cplusplus
@@ -107,6 +108,8 @@ zrpLoggerGetLogLevelString(enum ZrLogLevel level)
             return "warning";
         case ZR_LOG_LEVEL_INFO:
             return "info";
+        case ZR_LOG_LEVEL_TRACE:
+            return "trace";
         case ZR_LOG_LEVEL_DEBUG:
             return "debug";
         default:
@@ -125,6 +128,8 @@ zrpLoggerGetLogLevelColor(enum ZrLogLevel level)
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW;
         case ZR_LOG_LEVEL_INFO:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
+        case ZR_LOG_LEVEL_TRACE:
+            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_GREEN;
         case ZR_LOG_LEVEL_DEBUG:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA;
         default:
