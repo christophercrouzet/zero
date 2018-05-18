@@ -59,14 +59,12 @@
 #endif
 #endif /* ZRP_UNUSED_DEFINED */
 
-#ifndef ZRP_LOGGER_LINKAGE
 #if defined(ZR_LOGGER_SPECIFY_INTERNAL_LINKAGE)                                \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_LOGGER_LINKAGE static
 #else
 #define ZRP_LOGGER_LINKAGE extern
 #endif
-#endif /* ZRP_LOGGER_LINKAGE */
 
 typedef enum ZrLogLevel {
     ZR_LOG_LEVEL_DEBUG = 0,

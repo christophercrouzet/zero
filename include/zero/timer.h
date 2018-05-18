@@ -198,14 +198,12 @@ typedef char
 typedef enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 } ZrStatus;
 #endif /* ZRP_STATUS_DEFINED */
 
-#ifndef ZRP_TIMER_LINKAGE
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_TIMER_LINKAGE static
 #else
 #define ZRP_TIMER_LINKAGE extern
 #endif
-#endif /* ZRP_TIMER_LINKAGE */
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 

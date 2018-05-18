@@ -14,14 +14,12 @@
 
 /* @include "partials/status.h" */
 
-#ifndef ZRP_TIMER_LINKAGE
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_TIMER_LINKAGE static
 #else
 #define ZRP_TIMER_LINKAGE extern
 #endif
-#endif /* ZRP_TIMER_LINKAGE */
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 

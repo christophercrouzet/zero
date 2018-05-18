@@ -11,14 +11,12 @@
 /* @include "partials/types.h" */
 /* @include "partials/unused.h" */
 
-#ifndef ZRP_ALLOCATOR_LINKAGE
 #if defined(ZR_ALLOCATOR_SPECIFY_INTERNAL_LINKAGE)                             \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_ALLOCATOR_LINKAGE static
 #else
 #define ZRP_ALLOCATOR_LINKAGE extern
 #endif
-#endif /* ZRP_ALLOCATOR_LINKAGE */
 
 #ifdef __cplusplus
 extern "C" {
