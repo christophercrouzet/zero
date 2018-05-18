@@ -174,9 +174,9 @@ zrpLoggerGetLogLevelColor(enum ZrLogLevel level)
         case ZR_LOG_LEVEL_WARNING:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW;
         case ZR_LOG_LEVEL_INFO:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
-        case ZR_LOG_LEVEL_TRACE:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_GREEN;
+        case ZR_LOG_LEVEL_TRACE:
+            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
         case ZR_LOG_LEVEL_DEBUG:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA;
         default:
