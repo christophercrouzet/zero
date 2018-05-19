@@ -59,14 +59,10 @@ zrLogVaList(enum ZrLogLevel level,
 #include <stddef.h>
 #include <stdio.h>
 
-#ifndef ZR_LOGGER_ASSERT
-#ifdef ZR_ASSERT
-#define ZR_LOGGER_ASSERT ZR_ASSERT
-#else
+#ifndef ZR_ASSERT
 #include <assert.h>
-#define ZR_LOGGER_ASSERT assert
+#define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
-#endif /* ZR_LOGGER_ASSERT */
 
 #if !defined(ZR_DISABLE_LOG_STYLING) && defined(ZRP_PLATFORM_UNIX)             \
     && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
@@ -131,7 +127,7 @@ zrpLoggerGetLogLevelStyle(enum ZrLogLevel level)
         case ZR_LOG_LEVEL_DEBUG:
             return ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
         default:
-            ZR_LOGGER_ASSERT(0);
+            ZR_ASSERT(0);
             return ZRP_LOGGER_STYLE_RESET;
     };
 }
@@ -171,7 +167,7 @@ zrpLoggerGetStyleString(enum ZrpLoggerStyle style)
         case ZRP_LOGGER_STYLE_BRIGHT_CYAN:
             return "\x1b[1;36m";
         default:
-            ZR_LOGGER_ASSERT(0);
+            ZR_ASSERT(0);
             return "";
     }
 }
@@ -186,8 +182,8 @@ zrLog(enum ZrLogLevel level,
 {
     va_list args;
 
-    ZR_LOGGER_ASSERT(pFile != NULL);
-    ZR_LOGGER_ASSERT(pFormat != NULL);
+    ZR_ASSERT(pFile != NULL);
+    ZR_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
     zrLogVaList(level, pFile, line, pFormat, args);
@@ -205,8 +201,8 @@ zrLogVaList(enum ZrLogLevel level,
     const char *pLevelStyleStart;
     const char *pLevelStyleEnd;
 
-    ZR_LOGGER_ASSERT(pFile != NULL);
-    ZR_LOGGER_ASSERT(pFormat != NULL);
+    ZR_ASSERT(pFile != NULL);
+    ZR_ASSERT(pFormat != NULL);
 
     pLevelName = zrpLoggerGetLogLevelString(level);
 

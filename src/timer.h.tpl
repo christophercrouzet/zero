@@ -48,14 +48,10 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 #ifndef ZRP_TIMER_IMPLEMENTATION_DEFINED
 #define ZRP_TIMER_IMPLEMENTATION_DEFINED
 
-#ifndef ZR_TIMER_ASSERT
-#ifdef ZR_ASSERT
-#define ZR_TIMER_ASSERT ZR_ASSERT
-#else
+#ifndef ZR_ASSERT
 #include <assert.h>
-#define ZR_TIMER_ASSERT assert
+#define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
-#endif /* ZR_TIMER_ASSERT */
 
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
@@ -92,7 +88,7 @@ typedef char zrp_timer_unsupported_platform[-1];
 ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
-    ZR_TIMER_ASSERT(pTime != NULL);
+    ZR_ASSERT(pTime != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
@@ -169,7 +165,7 @@ zrGetRealTime(ZrUint64 *pTime)
 ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
-    ZR_TIMER_ASSERT(pTimes != NULL);
+    ZR_ASSERT(pTimes != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
