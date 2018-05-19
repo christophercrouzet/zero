@@ -68,33 +68,33 @@ zrLogVaList(enum ZrLogLevel level,
 #endif /* ZR_ASSERT */
 #endif /* ZR_LOGGER_ASSERT */
 
-#if !defined(ZR_DISABLE_LOG_COLORING) && defined(ZRP_PLATFORM_UNIX)            \
+#if !defined(ZR_DISABLE_LOG_STYLING) && defined(ZRP_PLATFORM_UNIX)             \
     && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
 #include <unistd.h>
-#define ZRP_LOGGER_COLORING 1
+#define ZRP_LOGGER_STYLING 1
 #else
-#define ZRP_LOGGER_COLORING 0
+#define ZRP_LOGGER_STYLING 0
 #endif
 
-#if ZRP_LOGGER_COLORING
-enum ZrpLoggerAnsiColor {
-    ZRP_LOGGER_ANSI_COLOR_RESET = 0,
-    ZRP_LOGGER_ANSI_COLOR_BLACK = 1,
-    ZRP_LOGGER_ANSI_COLOR_RED = 2,
-    ZRP_LOGGER_ANSI_COLOR_GREEN = 3,
-    ZRP_LOGGER_ANSI_COLOR_YELLOW = 4,
-    ZRP_LOGGER_ANSI_COLOR_BLUE = 5,
-    ZRP_LOGGER_ANSI_COLOR_MAGENTA = 6,
-    ZRP_LOGGER_ANSI_COLOR_CYAN = 7,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_BLACK = 8,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_RED = 9,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_GREEN = 10,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW = 11,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_BLUE = 12,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA = 13,
-    ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN = 14
+#if ZRP_LOGGER_STYLING
+enum ZrpLoggerStyle {
+    ZRP_LOGGER_STYLE_RESET = 0,
+    ZRP_LOGGER_STYLE_BLACK = 1,
+    ZRP_LOGGER_STYLE_RED = 2,
+    ZRP_LOGGER_STYLE_GREEN = 3,
+    ZRP_LOGGER_STYLE_YELLOW = 4,
+    ZRP_LOGGER_STYLE_BLUE = 5,
+    ZRP_LOGGER_STYLE_MAGENTA = 6,
+    ZRP_LOGGER_STYLE_CYAN = 7,
+    ZRP_LOGGER_STYLE_BRIGHT_BLACK = 8,
+    ZRP_LOGGER_STYLE_BRIGHT_RED = 9,
+    ZRP_LOGGER_STYLE_BRIGHT_GREEN = 10,
+    ZRP_LOGGER_STYLE_BRIGHT_YELLOW = 11,
+    ZRP_LOGGER_STYLE_BRIGHT_BLUE = 12,
+    ZRP_LOGGER_STYLE_BRIGHT_MAGENTA = 13,
+    ZRP_LOGGER_STYLE_BRIGHT_CYAN = 14
 };
-#endif /* ZRP_LOGGER_COLORING */
+#endif /* ZRP_LOGGER_STYLING */
 
 static const char *
 zrpLoggerGetLogLevelString(enum ZrLogLevel level)
@@ -115,67 +115,67 @@ zrpLoggerGetLogLevelString(enum ZrLogLevel level)
     }
 }
 
-#if ZRP_LOGGER_COLORING
-static enum ZrpLoggerAnsiColor
-zrpLoggerGetLogLevelColor(enum ZrLogLevel level)
+#if ZRP_LOGGER_STYLING
+static enum ZrpLoggerStyle
+zrpLoggerGetLogLevelStyle(enum ZrLogLevel level)
 {
     switch (level) {
         case ZR_LOG_LEVEL_ERROR:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_RED;
+            return ZRP_LOGGER_STYLE_BRIGHT_RED;
         case ZR_LOG_LEVEL_WARNING:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW;
+            return ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
         case ZR_LOG_LEVEL_INFO:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_GREEN;
+            return ZRP_LOGGER_STYLE_BRIGHT_GREEN;
         case ZR_LOG_LEVEL_TRACE:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
+            return ZRP_LOGGER_STYLE_BRIGHT_CYAN;
         case ZR_LOG_LEVEL_DEBUG:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA;
+            return ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
         default:
             ZR_LOGGER_ASSERT(0);
-            return ZRP_LOGGER_ANSI_COLOR_RESET;
+            return ZRP_LOGGER_STYLE_RESET;
     };
 }
 
 static const char *
-zrpLoggerGetAnsiColorString(enum ZrpLoggerAnsiColor color)
+zrpLoggerGetStyleString(enum ZrpLoggerStyle style)
 {
-    switch (color) {
-        case ZRP_LOGGER_ANSI_COLOR_RESET:
+    switch (style) {
+        case ZRP_LOGGER_STYLE_RESET:
             return "\x1b[0m";
-        case ZRP_LOGGER_ANSI_COLOR_BLACK:
+        case ZRP_LOGGER_STYLE_BLACK:
             return "\x1b[30m";
-        case ZRP_LOGGER_ANSI_COLOR_RED:
+        case ZRP_LOGGER_STYLE_RED:
             return "\x1b[31m";
-        case ZRP_LOGGER_ANSI_COLOR_GREEN:
+        case ZRP_LOGGER_STYLE_GREEN:
             return "\x1b[32m";
-        case ZRP_LOGGER_ANSI_COLOR_YELLOW:
+        case ZRP_LOGGER_STYLE_YELLOW:
             return "\x1b[33m";
-        case ZRP_LOGGER_ANSI_COLOR_BLUE:
+        case ZRP_LOGGER_STYLE_BLUE:
             return "\x1b[34m";
-        case ZRP_LOGGER_ANSI_COLOR_MAGENTA:
+        case ZRP_LOGGER_STYLE_MAGENTA:
             return "\x1b[35m";
-        case ZRP_LOGGER_ANSI_COLOR_CYAN:
+        case ZRP_LOGGER_STYLE_CYAN:
             return "\x1b[36m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_BLACK:
+        case ZRP_LOGGER_STYLE_BRIGHT_BLACK:
             return "\x1b[1;30m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_RED:
+        case ZRP_LOGGER_STYLE_BRIGHT_RED:
             return "\x1b[1;31m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_GREEN:
+        case ZRP_LOGGER_STYLE_BRIGHT_GREEN:
             return "\x1b[1;32m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW:
+        case ZRP_LOGGER_STYLE_BRIGHT_YELLOW:
             return "\x1b[1;33m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_BLUE:
+        case ZRP_LOGGER_STYLE_BRIGHT_BLUE:
             return "\x1b[1;34m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA:
+        case ZRP_LOGGER_STYLE_BRIGHT_MAGENTA:
             return "\x1b[1;35m";
-        case ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN:
+        case ZRP_LOGGER_STYLE_BRIGHT_CYAN:
             return "\x1b[1;36m";
         default:
             ZR_LOGGER_ASSERT(0);
             return "";
     }
 }
-#endif /* ZRP_LOGGER_COLORING */
+#endif /* ZRP_LOGGER_STYLING */
 
 ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
@@ -202,36 +202,35 @@ zrLogVaList(enum ZrLogLevel level,
             va_list args)
 {
     const char *pLevelName;
-    const char *pLevelColorStart;
-    const char *pLevelColorEnd;
+    const char *pLevelStyleStart;
+    const char *pLevelStyleEnd;
 
     ZR_LOGGER_ASSERT(pFile != NULL);
     ZR_LOGGER_ASSERT(pFormat != NULL);
 
     pLevelName = zrpLoggerGetLogLevelString(level);
 
-#if ZRP_LOGGER_COLORING
+#if ZRP_LOGGER_STYLING
     if (isatty(fileno(stderr))) {
-        enum ZrpLoggerAnsiColor levelColor;
+        enum ZrpLoggerStyle levelStyle;
 
-        levelColor = zrpLoggerGetLogLevelColor(level);
-        pLevelColorStart = zrpLoggerGetAnsiColorString(levelColor);
-        pLevelColorEnd
-            = zrpLoggerGetAnsiColorString(ZRP_LOGGER_ANSI_COLOR_RESET);
+        levelStyle = zrpLoggerGetLogLevelStyle(level);
+        pLevelStyleStart = zrpLoggerGetStyleString(levelStyle);
+        pLevelStyleEnd = zrpLoggerGetStyleString(ZRP_LOGGER_STYLE_RESET);
     } else {
-        pLevelColorStart = pLevelColorEnd = "";
+        pLevelStyleStart = pLevelStyleEnd = "";
     }
 #else
-    pLevelColorStart = pLevelColorEnd = "";
-#endif /* ZRP_LOGGER_COLORING */
+    pLevelStyleStart = pLevelStyleEnd = "";
+#endif /* ZRP_LOGGER_STYLING */
 
     fprintf(stderr,
             "%s:%d: %s%s%s: ",
             pFile,
             line,
-            pLevelColorStart,
+            pLevelStyleStart,
             pLevelName,
-            pLevelColorEnd);
+            pLevelStyleEnd);
     vfprintf(stderr, pFormat, args);
 }
 
