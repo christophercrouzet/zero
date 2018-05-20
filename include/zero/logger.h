@@ -151,7 +151,7 @@ enum ZrpLoggerStyle {
 #endif /* ZRP_LOGGER_STYLING */
 
 static const char *
-zrpLoggerGetLogLevelString(enum ZrpLogLevel level)
+zrpLoggerGetLogLevelName(enum ZrpLogLevel level)
 {
     switch (level) {
         case ZRP_LOG_LEVEL_ERROR:
@@ -192,7 +192,7 @@ zrpLoggerGetLogLevelStyle(enum ZrpLogLevel level)
 }
 
 static const char *
-zrpLoggerGetStyleString(enum ZrpLoggerStyle style)
+zrpLoggerGetStyleAnsiCode(enum ZrpLoggerStyle style)
 {
     switch (style) {
         case ZRP_LOGGER_STYLE_RESET:
@@ -246,15 +246,15 @@ zrpLogVaList(enum ZrpLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    pLevelName = zrpLoggerGetLogLevelString(level);
+    pLevelName = zrpLoggerGetLogLevelName(level);
 
 #if ZRP_LOGGER_STYLING
     if (isatty(fileno(stderr))) {
         enum ZrpLoggerStyle levelStyle;
 
         levelStyle = zrpLoggerGetLogLevelStyle(level);
-        pLevelStyleStart = zrpLoggerGetStyleString(levelStyle);
-        pLevelStyleEnd = zrpLoggerGetStyleString(ZRP_LOGGER_STYLE_RESET);
+        pLevelStyleStart = zrpLoggerGetStyleAnsiCode(levelStyle);
+        pLevelStyleEnd = zrpLoggerGetStyleAnsiCode(ZRP_LOGGER_STYLE_RESET);
     } else {
         pLevelStyleStart = pLevelStyleEnd = "";
     }
