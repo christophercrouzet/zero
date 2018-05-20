@@ -48,6 +48,8 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 #ifndef ZRP_TIMER_IMPLEMENTATION_DEFINED
 #define ZRP_TIMER_IMPLEMENTATION_DEFINED
 
+#include <stddef.h>
+
 #ifndef ZR_ASSERT
 #include <assert.h>
 #define ZR_ASSERT assert
