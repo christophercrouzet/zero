@@ -74,11 +74,11 @@ zrFreeAligned(void *pMemory);
 #define ZR_FREE free
 #endif /* ZR_FREE */
 
-#ifdef ZR_ALLOCATOR_ENABLE_DEBUGGING
+#if defined(ZR_ALLOCATOR_ENABLE_DEBUGGING) || defined(ZR_ENABLE_DEBUGGING)
 #define ZRP_ALLOCATOR_DEBUGGING 1
 #else
 #define ZRP_ALLOCATOR_DEBUGGING 0
-#endif /* ZR_ALLOCATOR_ENABLE_DEBUGGING */
+#endif
 
 #ifdef __cplusplus
 template<typename T>
