@@ -36,14 +36,14 @@ zrLog(enum ZrLogLevel level,
       const char *pFile,
       int line,
       const char *pFormat,
-      ...) ZRP_MAYBE_UNUSED;
+      ...);
 
 ZRP_LOGGER_LINKAGE void
 zrLogVaList(enum ZrLogLevel level,
             const char *pFile,
             int line,
             const char *pFormat,
-            va_list args) ZRP_MAYBE_UNUSED;
+            va_list args);
 
 #ifdef __cplusplus
 }
@@ -66,7 +66,7 @@ zrLogVaList(enum ZrLogLevel level,
 
 /* @include "partials/logger.h" */
 
-ZRP_LOGGER_LINKAGE void
+ZRP_MAYBE_UNUSED ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
       const char *pFile,
       int line,
@@ -89,7 +89,7 @@ zrLog(enum ZrLogLevel level,
     va_end(args);
 }
 
-ZRP_LOGGER_LINKAGE void
+ZRP_MAYBE_UNUSED ZRP_LOGGER_LINKAGE void
 zrLogVaList(enum ZrLogLevel level,
             const char *pFile,
             int line,

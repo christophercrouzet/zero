@@ -217,10 +217,10 @@ extern "C" {
 #endif /* __cplusplus */
 
 ZRP_TIMER_LINKAGE enum ZrStatus
-zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
+zrGetRealTime(ZrUint64 *pTime);
 
 ZRP_TIMER_LINKAGE enum ZrStatus
-zrGetCpuTimes(struct ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
+zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 
 #ifdef __cplusplus
 }
@@ -271,7 +271,7 @@ typedef char zrp_timer_unsupported_platform[-1];
     than 2^53, which corresponds to approximatively 104 days.
 */
 
-ZRP_TIMER_LINKAGE enum ZrStatus
+ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
     ZR_ASSERT(pTime != NULL);
@@ -348,7 +348,7 @@ zrGetRealTime(ZrUint64 *pTime)
     return ZR_ERROR;
 }
 
-ZRP_TIMER_LINKAGE enum ZrStatus
+ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
     ZR_ASSERT(pTimes != NULL);

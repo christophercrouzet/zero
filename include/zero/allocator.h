@@ -186,24 +186,22 @@ extern "C" {
 #endif /* __cplusplus */
 
 ZRP_ALLOCATOR_LINKAGE void *
-zrAllocate(ZrSize size) ZRP_MAYBE_UNUSED;
+zrAllocate(ZrSize size);
 
 ZRP_ALLOCATOR_LINKAGE void *
-zrReallocate(void *pOriginal, ZrSize size) ZRP_MAYBE_UNUSED;
+zrReallocate(void *pOriginal, ZrSize size);
 
 ZRP_ALLOCATOR_LINKAGE void
-zrFree(void *pMemory) ZRP_MAYBE_UNUSED;
+zrFree(void *pMemory);
 
 ZRP_ALLOCATOR_LINKAGE void *
-zrAllocateAligned(ZrSize size, ZrSize alignment) ZRP_MAYBE_UNUSED;
+zrAllocateAligned(ZrSize size, ZrSize alignment);
 
 ZRP_ALLOCATOR_LINKAGE void *
-zrReallocateAligned(void *pOriginal,
-                    ZrSize size,
-                    ZrSize alignment) ZRP_MAYBE_UNUSED;
+zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment);
 
 ZRP_ALLOCATOR_LINKAGE void
-zrFreeAligned(void *pMemory) ZRP_MAYBE_UNUSED;
+zrFreeAligned(void *pMemory);
 
 #ifdef __cplusplus
 }
@@ -338,7 +336,7 @@ zrpAllocatorIsPowerOfTwo(ZrSize x)
     return (x != 0) && !(x & (x - 1));
 }
 
-ZRP_ALLOCATOR_LINKAGE void *
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size)
 {
     if (size == 0) {
@@ -348,7 +346,7 @@ zrAllocate(ZrSize size)
     return ZR_MALLOC((size_t)size);
 }
 
-ZRP_ALLOCATOR_LINKAGE void *
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrReallocate(void *pOriginalBuffer, ZrSize size)
 {
     if (pOriginalBuffer == NULL) {
@@ -363,13 +361,13 @@ zrReallocate(void *pOriginalBuffer, ZrSize size)
     return ZR_REALLOC(pOriginalBuffer, (size_t)size);
 }
 
-ZRP_ALLOCATOR_LINKAGE void
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void
 zrFree(void *pBuffer)
 {
     ZR_FREE(pBuffer);
 }
 
-ZRP_ALLOCATOR_LINKAGE void *
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
@@ -402,7 +400,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     return pBuffer;
 }
 
-ZRP_ALLOCATOR_LINKAGE void *
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
@@ -465,7 +463,7 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
     return pBuffer;
 }
 
-ZRP_ALLOCATOR_LINKAGE void
+ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void
 zrFreeAligned(void *pBuffer)
 {
     struct ZrpAllocatorAlignedHeader *pHeader;
