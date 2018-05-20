@@ -64,114 +64,7 @@ zrLogVaList(enum ZrLogLevel level,
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
 
-#if !defined(ZR_DISABLE_LOG_STYLING) && defined(ZRP_PLATFORM_UNIX)             \
-    && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
-#include <unistd.h>
-#define ZRP_LOGGER_STYLING 1
-#else
-#define ZRP_LOGGER_STYLING 0
-#endif
-
-#if ZRP_LOGGER_STYLING
-enum ZrpLoggerStyle {
-    ZRP_LOGGER_STYLE_RESET = 0,
-    ZRP_LOGGER_STYLE_BLACK = 1,
-    ZRP_LOGGER_STYLE_RED = 2,
-    ZRP_LOGGER_STYLE_GREEN = 3,
-    ZRP_LOGGER_STYLE_YELLOW = 4,
-    ZRP_LOGGER_STYLE_BLUE = 5,
-    ZRP_LOGGER_STYLE_MAGENTA = 6,
-    ZRP_LOGGER_STYLE_CYAN = 7,
-    ZRP_LOGGER_STYLE_BRIGHT_BLACK = 8,
-    ZRP_LOGGER_STYLE_BRIGHT_RED = 9,
-    ZRP_LOGGER_STYLE_BRIGHT_GREEN = 10,
-    ZRP_LOGGER_STYLE_BRIGHT_YELLOW = 11,
-    ZRP_LOGGER_STYLE_BRIGHT_BLUE = 12,
-    ZRP_LOGGER_STYLE_BRIGHT_MAGENTA = 13,
-    ZRP_LOGGER_STYLE_BRIGHT_CYAN = 14
-};
-#endif /* ZRP_LOGGER_STYLING */
-
-static const char *
-zrpLoggerGetLogLevelString(enum ZrLogLevel level)
-{
-    switch (level) {
-        case ZR_LOG_LEVEL_ERROR:
-            return "error";
-        case ZR_LOG_LEVEL_WARNING:
-            return "warning";
-        case ZR_LOG_LEVEL_INFO:
-            return "info";
-        case ZR_LOG_LEVEL_TRACE:
-            return "trace";
-        case ZR_LOG_LEVEL_DEBUG:
-            return "debug";
-        default:
-            return "invalid";
-    }
-}
-
-#if ZRP_LOGGER_STYLING
-static enum ZrpLoggerStyle
-zrpLoggerGetLogLevelStyle(enum ZrLogLevel level)
-{
-    switch (level) {
-        case ZR_LOG_LEVEL_ERROR:
-            return ZRP_LOGGER_STYLE_BRIGHT_RED;
-        case ZR_LOG_LEVEL_WARNING:
-            return ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
-        case ZR_LOG_LEVEL_INFO:
-            return ZRP_LOGGER_STYLE_BRIGHT_GREEN;
-        case ZR_LOG_LEVEL_TRACE:
-            return ZRP_LOGGER_STYLE_BRIGHT_CYAN;
-        case ZR_LOG_LEVEL_DEBUG:
-            return ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
-        default:
-            ZR_ASSERT(0);
-            return ZRP_LOGGER_STYLE_RESET;
-    };
-}
-
-static const char *
-zrpLoggerGetStyleString(enum ZrpLoggerStyle style)
-{
-    switch (style) {
-        case ZRP_LOGGER_STYLE_RESET:
-            return "\x1b[0m";
-        case ZRP_LOGGER_STYLE_BLACK:
-            return "\x1b[30m";
-        case ZRP_LOGGER_STYLE_RED:
-            return "\x1b[31m";
-        case ZRP_LOGGER_STYLE_GREEN:
-            return "\x1b[32m";
-        case ZRP_LOGGER_STYLE_YELLOW:
-            return "\x1b[33m";
-        case ZRP_LOGGER_STYLE_BLUE:
-            return "\x1b[34m";
-        case ZRP_LOGGER_STYLE_MAGENTA:
-            return "\x1b[35m";
-        case ZRP_LOGGER_STYLE_CYAN:
-            return "\x1b[36m";
-        case ZRP_LOGGER_STYLE_BRIGHT_BLACK:
-            return "\x1b[1;30m";
-        case ZRP_LOGGER_STYLE_BRIGHT_RED:
-            return "\x1b[1;31m";
-        case ZRP_LOGGER_STYLE_BRIGHT_GREEN:
-            return "\x1b[1;32m";
-        case ZRP_LOGGER_STYLE_BRIGHT_YELLOW:
-            return "\x1b[1;33m";
-        case ZRP_LOGGER_STYLE_BRIGHT_BLUE:
-            return "\x1b[1;34m";
-        case ZRP_LOGGER_STYLE_BRIGHT_MAGENTA:
-            return "\x1b[1;35m";
-        case ZRP_LOGGER_STYLE_BRIGHT_CYAN:
-            return "\x1b[1;36m";
-        default:
-            ZR_ASSERT(0);
-            return "";
-    }
-}
-#endif /* ZRP_LOGGER_STYLING */
+/* @include "partials/logger.h" */
 
 ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
@@ -185,8 +78,14 @@ zrLog(enum ZrLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
+    ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
+    ZR_ASSERT(ZR_LOG_LEVEL_WARNING == ZRP_LOG_LEVEL_WARNING);
+    ZR_ASSERT(ZR_LOG_LEVEL_INFO == ZRP_LOG_LEVEL_INFO);
+    ZR_ASSERT(ZR_LOG_LEVEL_TRACE == ZRP_LOG_LEVEL_TRACE);
+    ZR_ASSERT(ZR_LOG_LEVEL_DEBUG == ZRP_LOG_LEVEL_DEBUG);
+
     va_start(args, pFormat);
-    zrLogVaList(level, pFile, line, pFormat, args);
+    zrpLogVaList((enum ZrpLogLevel)level, pFile, line, pFormat, args);
     va_end(args);
 }
 
@@ -197,37 +96,16 @@ zrLogVaList(enum ZrLogLevel level,
             const char *pFormat,
             va_list args)
 {
-    const char *pLevelName;
-    const char *pLevelStyleStart;
-    const char *pLevelStyleEnd;
-
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    pLevelName = zrpLoggerGetLogLevelString(level);
+    ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
+    ZR_ASSERT(ZR_LOG_LEVEL_WARNING == ZRP_LOG_LEVEL_WARNING);
+    ZR_ASSERT(ZR_LOG_LEVEL_INFO == ZRP_LOG_LEVEL_INFO);
+    ZR_ASSERT(ZR_LOG_LEVEL_TRACE == ZRP_LOG_LEVEL_TRACE);
+    ZR_ASSERT(ZR_LOG_LEVEL_DEBUG == ZRP_LOG_LEVEL_DEBUG);
 
-#if ZRP_LOGGER_STYLING
-    if (isatty(fileno(stderr))) {
-        enum ZrpLoggerStyle levelStyle;
-
-        levelStyle = zrpLoggerGetLogLevelStyle(level);
-        pLevelStyleStart = zrpLoggerGetStyleString(levelStyle);
-        pLevelStyleEnd = zrpLoggerGetStyleString(ZRP_LOGGER_STYLE_RESET);
-    } else {
-        pLevelStyleStart = pLevelStyleEnd = "";
-    }
-#else
-    pLevelStyleStart = pLevelStyleEnd = "";
-#endif /* ZRP_LOGGER_STYLING */
-
-    fprintf(stderr,
-            "%s:%d: %s%s%s: ",
-            pFile,
-            line,
-            pLevelStyleStart,
-            pLevelName,
-            pLevelStyleEnd);
-    vfprintf(stderr, pFormat, args);
+    zrpLogVaList((enum ZrpLogLevel)level, pFile, line, pFormat, args);
 }
 
 #endif /* ZRP_LOGGER_IMPLEMENTATION_DEFINED */
