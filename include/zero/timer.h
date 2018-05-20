@@ -247,7 +247,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 #include <sys/resource.h>
 #elif defined(ZRP_PLATFORM_UNIX)
 #include <sys/resource.h>
-#if _POSIX_C_SOURCE >= 199309L
+#if defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 199309L
 #include <time.h>
 #define ZRP_TIMER_USE_CLOCK_GETTIME
 #if defined(CLOCK_MONOTONIC_RAW)
