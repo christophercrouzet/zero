@@ -195,7 +195,7 @@ typedef char
 
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
-enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
+enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1, ZR_ERROR_INVALID_VALUE = -2 };
 #endif /* ZRP_STATUS_DEFINED */
 
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
@@ -274,7 +274,9 @@ typedef char zrp_timer_unsupported_platform[-1];
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
-    ZR_ASSERT(pTime != NULL);
+    if (pTime == NULL) {
+        return ZR_ERROR_INVALID_VALUE;
+    }
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
@@ -351,7 +353,9 @@ zrGetRealTime(ZrUint64 *pTime)
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
-    ZR_ASSERT(pTimes != NULL);
+    if (pTimes == NULL) {
+        return ZR_ERROR_INVALID_VALUE;
+    }
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {

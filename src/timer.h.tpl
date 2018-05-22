@@ -90,7 +90,9 @@ typedef char zrp_timer_unsupported_platform[-1];
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
-    ZR_ASSERT(pTime != NULL);
+    if (pTime == NULL) {
+        return ZR_ERROR_INVALID_VALUE;
+    }
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
@@ -167,7 +169,9 @@ zrGetRealTime(ZrUint64 *pTime)
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
-    ZR_ASSERT(pTimes != NULL);
+    if (pTimes == NULL) {
+        return ZR_ERROR_INVALID_VALUE;
+    }
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {

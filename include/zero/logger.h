@@ -300,8 +300,13 @@ zrLog(enum ZrLogLevel level,
 {
     va_list args;
 
-    ZR_ASSERT(pFile != NULL);
-    ZR_ASSERT(pFormat != NULL);
+    if (pFile == NULL) {
+        return;
+    }
+
+    if (pFormat == NULL) {
+        return;
+    }
 
     ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
     ZR_ASSERT(ZR_LOG_LEVEL_WARNING == ZRP_LOG_LEVEL_WARNING);
@@ -321,8 +326,13 @@ zrLogVaList(enum ZrLogLevel level,
             const char *pFormat,
             va_list args)
 {
-    ZR_ASSERT(pFile != NULL);
-    ZR_ASSERT(pFormat != NULL);
+    if (pFile == NULL) {
+        return;
+    }
+
+    if (pFormat == NULL) {
+        return;
+    }
 
     ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
     ZR_ASSERT(ZR_LOG_LEVEL_WARNING == ZRP_LOG_LEVEL_WARNING);

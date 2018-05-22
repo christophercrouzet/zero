@@ -1,4 +1,4 @@
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
-enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
+enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1, ZR_ERROR_INVALID_VALUE = -2 };
 #endif /* ZRP_STATUS_DEFINED */
