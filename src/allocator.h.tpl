@@ -8,6 +8,7 @@
 #define ZR_ALLOCATOR_PATCH_VERSION 1
 
 /* @include "partials/environment.h" */
+/* @include "partials/platform.h" */
 /* @include "partials/types.h" */
 /* @include "partials/unused.h" */
 
@@ -50,8 +51,10 @@ zrFreeAligned(void *pMemory);
 #ifndef ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED
 #define ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifndef ZR_ASSERT
@@ -73,6 +76,9 @@ zrFreeAligned(void *pMemory);
 #include <stdlib.h>
 #define ZR_FREE free
 #endif /* ZR_FREE */
+
+/* @include "partials/logger.h" */
+/* @include "partials/logging.h" */
 
 #if defined(ZR_ALLOCATOR_ENABLE_DEBUGGING) || defined(ZR_ENABLE_DEBUGGING)
 #define ZRP_ALLOCATOR_DEBUGGING 1
@@ -177,6 +183,7 @@ ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size)
 {
     if (size == 0) {
+        ZRP_LOG_INFO("allocation called with a size of 0\n");
         return NULL;
     }
 
@@ -191,6 +198,7 @@ zrReallocate(void *pOriginalBuffer, ZrSize size)
     }
 
     if (size == 0) {
+        ZRP_LOG_INFO("reallocation called with a size of 0\n");
         zrFree(pOriginalBuffer);
         return NULL;
     }
@@ -211,7 +219,13 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    if (size == 0 || !zrpAllocatorIsPowerOfTwo(alignment)) {
+    if (size == 0) {
+        ZRP_LOG_INFO("allocation called with a size of 0\n");
+        return NULL;
+    }
+
+    if (!zrpAllocatorIsPowerOfTwo(alignment)) {
+        ZRP_LOG_ERROR("invalid argument ‘alignment’ (not a power of two)\n");
         return NULL;
     }
 
@@ -222,6 +236,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     pBlock = ZR_MALLOC(
         (size_t)ZRP_ALLOCATOR_GET_ALIGNED_BLOCK_SIZE(size, alignment));
     if (pBlock == NULL) {
+        ZRP_LOG_ERROR("failed to allocate the block\n");
         return NULL;
     }
 
@@ -250,8 +265,14 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
         return zrAllocateAligned(size, alignment);
     }
 
-    if (size == 0 || !zrpAllocatorIsPowerOfTwo(alignment)) {
+    if (size == 0) {
+        ZRP_LOG_INFO("reallocation called with a size of 0\n");
         zrFreeAligned(pOriginalBuffer);
+        return NULL;
+    }
+
+    if (!zrpAllocatorIsPowerOfTwo(alignment)) {
+        ZRP_LOG_ERROR("invalid argument ‘alignment’ (not a power of two)\n");
         return NULL;
     }
 
@@ -270,6 +291,7 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
         pOriginalBlock,
         (size_t)ZRP_ALLOCATOR_GET_ALIGNED_BLOCK_SIZE(size, alignment));
     if (pBlock == NULL) {
+        ZRP_LOG_ERROR("failed to allocate the block\n");
         return NULL;
     }
 

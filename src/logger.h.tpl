@@ -76,10 +76,12 @@ zrLog(enum ZrLogLevel level,
     va_list args;
 
     if (pFile == NULL) {
+        fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
         return;
     }
 
     if (pFormat == NULL) {
+        fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
         return;
     }
 
@@ -102,10 +104,12 @@ zrLogVaList(enum ZrLogLevel level,
             va_list args)
 {
     if (pFile == NULL) {
+        fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
         return;
     }
 
     if (pFormat == NULL) {
+        fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
         return;
     }
 

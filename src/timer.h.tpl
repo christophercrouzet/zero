@@ -48,12 +48,17 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #ifndef ZRP_TIMER_IMPLEMENTATION_DEFINED
 #define ZRP_TIMER_IMPLEMENTATION_DEFINED
 
+#include <stdarg.h>
 #include <stddef.h>
+#include <stdio.h>
 
 #ifndef ZR_ASSERT
 #include <assert.h>
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
+
+/* @include "partials/logger.h" */
+/* @include "partials/logging.h" */
 
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
@@ -91,6 +96,7 @@ ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
     if (pTime == NULL) {
+        ZRP_LOG_ERROR("invalid argument ‘pTime’ (NULL)\n");
         return ZR_ERROR_INVALID_VALUE;
     }
 
@@ -103,6 +109,7 @@ zrGetRealTime(ZrUint64 *pTime)
             LARGE_INTEGER frequency;
 
             if (!QueryPerformanceFrequency(&frequency)) {
+                ZRP_LOG_ERROR("failed to retrieve the time's frequency\n");
                 return ZR_ERROR;
             }
 
@@ -110,6 +117,7 @@ zrGetRealTime(ZrUint64 *pTime)
         }
 
         if (!QueryPerformanceCounter(&time)) {
+            ZRP_LOG_ERROR("failed to retrieve the current time\n");
             return ZR_ERROR;
         }
 
@@ -130,6 +138,7 @@ zrGetRealTime(ZrUint64 *pTime)
             mach_timebase_info_data_t info;
 
             if (mach_timebase_info(&info) != KERN_SUCCESS) {
+                ZRP_LOG_ERROR("failed to retrieve the current time\n");
                 return ZR_ERROR;
             }
 
@@ -144,25 +153,31 @@ zrGetRealTime(ZrUint64 *pTime)
     {
         struct timespec time;
 
-        if (clock_gettime(ZRP_TIMER_CLOCK_ID, &time) == 0) {
-            *pTime = (ZrUint64)time.tv_sec * 1000000000ull
-                     + (ZrUint64)time.tv_nsec;
-            return ZR_SUCCESS;
+        if (clock_gettime(ZRP_TIMER_CLOCK_ID, &time) != 0) {
+            ZRP_LOG_ERROR("failed to retrieve the current time\n");
+            return ZR_ERROR;
         }
+
+        *pTime = (ZrUint64)time.tv_sec * 1000000000ull + (ZrUint64)time.tv_nsec;
+        return ZR_SUCCESS;
     }
 #else
     {
         struct timeval time;
 
-        if (gettimeofday(&time, NULL) == 0) {
-            *pTime = (ZrUint64)time.tv_sec * 1000000000ull
-                     + (ZrUint64)time.tv_usec * 1000ull;
-            return ZR_SUCCESS;
+        if (gettimeofday(&time, NULL) != 0) {
+            ZRP_LOG_ERROR("failed to retrieve the current time\n");
+            return ZR_ERROR;
         }
+
+        *pTime = (ZrUint64)time.tv_sec * 1000000000ull
+                 + (ZrUint64)time.tv_usec * 1000ull;
+        return ZR_SUCCESS;
     }
 #endif
 #endif
 
+    ZRP_LOG_ERROR("platform not supported\n");
     return ZR_ERROR;
 }
 
@@ -170,6 +185,7 @@ ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
     if (pTimes == NULL) {
+        ZRP_LOG_ERROR("invalid argument ‘pTimes’ (NULL)\n");
         return ZR_ERROR_INVALID_VALUE;
     }
 
@@ -186,6 +202,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes)
                              &exitTime,
                              &kernelTime,
                              &userTime)) {
+            ZRP_LOG_ERROR("failed to retrieve the current CPU times\n");
             return ZR_ERROR;
         }
 
@@ -202,6 +219,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes)
         struct rusage usage;
 
         if (getrusage(RUSAGE_SELF, &usage)) {
+            ZRP_LOG_ERROR("failed to retrieve the current CPU times\n");
             return ZR_ERROR;
         }
 
@@ -213,6 +231,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes)
     }
 #endif
 
+    ZRP_LOG_ERROR("platform not supported\n");
     return ZR_ERROR;
 }
 
