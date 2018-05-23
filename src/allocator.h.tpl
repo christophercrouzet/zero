@@ -79,6 +79,7 @@ zrFreeAligned(void *pMemory);
 
 /* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
+/* @include "partials/validation.h" */
 
 #if defined(ZR_ALLOCATOR_ENABLE_DEBUGGING) || defined(ZR_ENABLE_DEBUGGING)
 #define ZRP_ALLOCATOR_DEBUGGING 1
@@ -224,9 +225,12 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
         return NULL;
     }
 
-    if (!zrpAllocatorIsPowerOfTwo(alignment)) {
-        ZRP_LOG_ERROR("invalid argument ‘alignment’ (not a power of two)\n");
-        return NULL;
+    if (ZRP_INPUT_VALIDATION) {
+        if (!zrpAllocatorIsPowerOfTwo(alignment)) {
+            ZRP_LOG_ERROR(
+                "invalid argument ‘alignment’ (not a power of two)\n");
+            return NULL;
+        }
     }
 
     if (alignment < zrpAllocatorMinAlignment) {
@@ -271,9 +275,12 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
         return NULL;
     }
 
-    if (!zrpAllocatorIsPowerOfTwo(alignment)) {
-        ZRP_LOG_ERROR("invalid argument ‘alignment’ (not a power of two)\n");
-        return NULL;
+    if (ZRP_INPUT_VALIDATION) {
+        if (!zrpAllocatorIsPowerOfTwo(alignment)) {
+            ZRP_LOG_ERROR(
+                "invalid argument ‘alignment’ (not a power of two)\n");
+            return NULL;
+        }
     }
 
     if (alignment < zrpAllocatorMinAlignment) {

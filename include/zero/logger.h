@@ -291,6 +291,14 @@ zrpLog(enum ZrpLogLevel level,
 
 #endif /* ZRP_LOGGER_DEFINED */
 
+#ifndef ZRP_INPUT_VALIDATION
+#ifdef ZR_ENABLE_INPUT_VALIDATION
+#define ZRP_INPUT_VALIDATION 1
+#else
+#define ZRP_INPUT_VALIDATION 0
+#endif /* ZR_ENABLE_INPUT_VALIDATION */
+#endif /* ZRP_INPUT_VALIDATION */
+
 ZRP_MAYBE_UNUSED ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
       const char *pFile,
@@ -300,14 +308,16 @@ zrLog(enum ZrLogLevel level,
 {
     va_list args;
 
-    if (pFile == NULL) {
-        fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
-        return;
-    }
+    if (ZRP_INPUT_VALIDATION) {
+        if (pFile == NULL) {
+            fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
+            return;
+        }
 
-    if (pFormat == NULL) {
-        fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
-        return;
+        if (pFormat == NULL) {
+            fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
+            return;
+        }
     }
 
     ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
@@ -328,14 +338,16 @@ zrLogVaList(enum ZrLogLevel level,
             const char *pFormat,
             va_list args)
 {
-    if (pFile == NULL) {
-        fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
-        return;
-    }
+    if (ZRP_INPUT_VALIDATION) {
+        if (pFile == NULL) {
+            fprintf(stderr, "invalid argument ‘pFile’ (NULL)\n");
+            return;
+        }
 
-    if (pFormat == NULL) {
-        fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
-        return;
+        if (pFormat == NULL) {
+            fprintf(stderr, "invalid argument ‘pFormat’ (NULL)\n");
+            return;
+        }
     }
 
     ZR_ASSERT(ZR_LOG_LEVEL_ERROR == ZRP_LOG_LEVEL_ERROR);
