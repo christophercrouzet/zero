@@ -581,7 +581,7 @@ static const size_t zrpAllocatorMinAlignment
           : sizeof(void *);
 
 static int
-zrpAllocatorIsPowerOfTwo(ZrSize x)
+zrpAllocatorIsPowerOfTwo(size_t x)
 {
     /* Decrement and compare approach. */
     return (x != 0) && !(x & (x - 1));
@@ -627,7 +627,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo(alignment));
+    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
 
     if (size == 0) {
         ZRP_LOG_INFO("allocation called with a size of 0\n");
@@ -666,7 +666,7 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo(alignment));
+    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
 
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);
