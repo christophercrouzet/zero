@@ -30,7 +30,7 @@ ZRP_ALLOCATOR_LINKAGE void *
 zrReallocate(void *pOriginal, ZrSize size);
 
 ZRP_ALLOCATOR_LINKAGE void
-zrFree(void *pMemory);
+zrFree(const void *pMemory);
 
 ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment);
@@ -39,7 +39,7 @@ ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment);
 
 ZRP_ALLOCATOR_LINKAGE void
-zrFreeAligned(void *pMemory);
+zrFreeAligned(const void *pMemory);
 
 #ifdef __cplusplus
 }
@@ -86,6 +86,8 @@ zrFreeAligned(void *pMemory);
 #else
 #define ZRP_ALLOCATOR_DEBUGGING 0
 #endif
+
+#define ZRP_ALLOCATOR_CAST_CONST(type, x) (type)(uintptr_t)(x)
 
 #ifdef __cplusplus
 template<typename T>
@@ -208,9 +210,9 @@ zrReallocate(void *pOriginal, ZrSize size)
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void
-zrFree(void *pMemory)
+zrFree(const void *pMemory)
 {
-    ZR_FREE(pMemory);
+    ZR_FREE(ZRP_ALLOCATOR_CAST_CONST(void *, pMemory));
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
@@ -330,7 +332,7 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void
-zrFreeAligned(void *pMemory)
+zrFreeAligned(const void *pMemory)
 {
     struct ZrpAllocatorAlignedHeader *pHeader;
 
@@ -338,8 +340,10 @@ zrFreeAligned(void *pMemory)
         return;
     }
 
-    pHeader = &ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pMemory);
-    ZR_FREE(ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(pMemory, pHeader->offset));
+    pHeader = &ZRP_ALLOCATOR_GET_ALIGNED_HEADER(
+        ZRP_ALLOCATOR_CAST_CONST(void *, pMemory));
+    ZR_FREE(ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(
+        ZRP_ALLOCATOR_CAST_CONST(void *, pMemory), pHeader->offset));
 }
 
 #endif /* ZRP_ALLOCATOR_IMPLEMENTATION_DEFINED */
