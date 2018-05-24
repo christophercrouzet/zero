@@ -195,7 +195,7 @@ typedef char
 
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
-enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1, ZR_ERROR_INVALID_VALUE = -2 };
+enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
 #endif /* ZRP_STATUS_DEFINED */
 
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
@@ -469,14 +469,6 @@ zrpLog(enum ZrpLogLevel level,
 
 #endif /* ZRP_LOGGING_DEFINED */
 
-#ifndef ZRP_INPUT_VALIDATION
-#ifdef ZR_ENABLE_INPUT_VALIDATION
-#define ZRP_INPUT_VALIDATION 1
-#else
-#define ZRP_INPUT_VALIDATION 0
-#endif /* ZR_ENABLE_INPUT_VALIDATION */
-#endif /* ZRP_INPUT_VALIDATION */
-
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -512,12 +504,7 @@ typedef char zrp_timer_unsupported_platform[-1];
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
-    if (ZRP_INPUT_VALIDATION) {
-        if (pTime == NULL) {
-            ZRP_LOG_ERROR("invalid argument ‘pTime’ (NULL)\n");
-            return ZR_ERROR_INVALID_VALUE;
-        }
-    }
+    ZR_ASSERT(pTime != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
@@ -603,12 +590,7 @@ zrGetRealTime(ZrUint64 *pTime)
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
-    if (ZRP_INPUT_VALIDATION) {
-        if (pTimes == NULL) {
-            ZRP_LOG_ERROR("invalid argument ‘pTimes’ (NULL)\n");
-            return ZR_ERROR_INVALID_VALUE;
-        }
-    }
+    ZR_ASSERT(pTimes != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {

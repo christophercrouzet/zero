@@ -486,14 +486,6 @@ zrpLog(enum ZrpLogLevel level,
 
 #endif /* ZRP_LOGGING_DEFINED */
 
-#ifndef ZRP_INPUT_VALIDATION
-#ifdef ZR_ENABLE_INPUT_VALIDATION
-#define ZRP_INPUT_VALIDATION 1
-#else
-#define ZRP_INPUT_VALIDATION 0
-#endif /* ZR_ENABLE_INPUT_VALIDATION */
-#endif /* ZRP_INPUT_VALIDATION */
-
 #if defined(ZR_ALLOCATOR_ENABLE_DEBUGGING) || defined(ZR_ENABLE_DEBUGGING)
 #define ZRP_ALLOCATOR_DEBUGGING 1
 #else
@@ -635,17 +627,11 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
+    ZR_ASSERT(zrpAllocatorIsPowerOfTwo(alignment));
+
     if (size == 0) {
         ZRP_LOG_INFO("allocation called with a size of 0\n");
         return NULL;
-    }
-
-    if (ZRP_INPUT_VALIDATION) {
-        if (!zrpAllocatorIsPowerOfTwo(alignment)) {
-            ZRP_LOG_ERROR(
-                "invalid argument ‘alignment’ (not a power of two)\n");
-            return NULL;
-        }
     }
 
     if (alignment < zrpAllocatorMinAlignment) {
@@ -680,6 +666,8 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
+    ZR_ASSERT(zrpAllocatorIsPowerOfTwo(alignment));
+
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);
     }
@@ -688,14 +676,6 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
         ZRP_LOG_INFO("reallocation called with a size of 0\n");
         zrFreeAligned(pOriginal);
         return NULL;
-    }
-
-    if (ZRP_INPUT_VALIDATION) {
-        if (!zrpAllocatorIsPowerOfTwo(alignment)) {
-            ZRP_LOG_ERROR(
-                "invalid argument ‘alignment’ (not a power of two)\n");
-            return NULL;
-        }
     }
 
     if (alignment < zrpAllocatorMinAlignment) {

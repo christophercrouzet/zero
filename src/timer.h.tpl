@@ -59,7 +59,6 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 
 /* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
-/* @include "partials/validation.h" */
 
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
@@ -96,12 +95,7 @@ typedef char zrp_timer_unsupported_platform[-1];
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
-    if (ZRP_INPUT_VALIDATION) {
-        if (pTime == NULL) {
-            ZRP_LOG_ERROR("invalid argument ‘pTime’ (NULL)\n");
-            return ZR_ERROR_INVALID_VALUE;
-        }
-    }
+    ZR_ASSERT(pTime != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
@@ -187,12 +181,7 @@ zrGetRealTime(ZrUint64 *pTime)
 ZRP_MAYBE_UNUSED ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
-    if (ZRP_INPUT_VALIDATION) {
-        if (pTimes == NULL) {
-            ZRP_LOG_ERROR("invalid argument ‘pTimes’ (NULL)\n");
-            return ZR_ERROR_INVALID_VALUE;
-        }
-    }
+    ZR_ASSERT(pTimes != NULL);
 
 #if defined(ZRP_PLATFORM_WINDOWS)
     {
