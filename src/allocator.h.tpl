@@ -243,7 +243,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 
     pHeader = &ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pBuffer);
     pHeader->offset = (unsigned char *)pBuffer - (unsigned char *)pBlock;
-    pHeader->size = size;
+    pHeader->size = (size_t)size;
 #if ZRP_ALLOCATOR_DEBUGGING
     pHeader->alignment = (size_t)alignment;
 #endif /* ZRP_ALLOCATOR_DEBUGGING */
@@ -293,7 +293,7 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 
     if (pBlock == pOriginalBlock) {
         /* `realloc()` expanded the block in place. */
-        ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pOriginal).size = size;
+        ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pOriginal).size = (size_t)size;
         return pOriginal;
     }
 
@@ -301,7 +301,7 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 
     pHeader = &ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pBuffer);
     pHeader->offset = (unsigned char *)pBuffer - (unsigned char *)pBlock;
-    pHeader->size = size;
+    pHeader->size = (size_t)size;
 
     if (pHeader->offset == originalHeader.offset) {
         /*
