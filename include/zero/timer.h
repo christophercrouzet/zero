@@ -195,7 +195,12 @@ typedef char
 
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
-enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
+enum ZrStatus {
+    ZR_SUCCESS = 0,
+    ZR_ERROR = -1,
+    ZR_ERROR_ALLOCATION = -2,
+    ZR_ERROR_MAX_SIZE_EXCEEDED = -3
+};
 #endif /* ZRP_STATUS_DEFINED */
 
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \

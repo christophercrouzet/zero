@@ -41,6 +41,7 @@ macro(zr_add_library target)
 endmacro()
 
 zr_add_library(allocator)
+zr_add_library(dynamicarray)
 zr_add_library(logger)
 zr_add_library(timer)
 
