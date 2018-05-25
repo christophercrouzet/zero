@@ -168,7 +168,7 @@ static const size_t zrpAllocatorMinAlignment
           ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
-static int
+ZRP_MAYBE_UNUSED static int
 zrpAllocatorIsPowerOfTwo(size_t x)
 {
     /* Decrement and compare approach. */
