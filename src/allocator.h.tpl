@@ -15,13 +15,11 @@
 #if defined(ZR_ALLOCATOR_SPECIFY_INTERNAL_LINKAGE)                             \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_ALLOCATOR_LINKAGE static
+#elif defined(__cplusplus)
+#define ZRP_ALLOCATOR_LINKAGE extern "C"
 #else
 #define ZRP_ALLOCATOR_LINKAGE extern
 #endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 
 ZRP_ALLOCATOR_LINKAGE void *
 zrAllocate(ZrSize size);
@@ -40,10 +38,6 @@ zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment);
 
 ZRP_ALLOCATOR_LINKAGE void
 zrFreeAligned(const void *pMemory);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* ZERO_ALLOCATOR_H */
 

@@ -201,6 +201,8 @@ enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_TIMER_LINKAGE static
+#elif defined(__cplusplus)
+#define ZRP_TIMER_LINKAGE extern "C"
 #else
 #define ZRP_TIMER_LINKAGE extern
 #endif
@@ -212,19 +214,11 @@ struct ZrCpuTimes {
     ZrUint64 system;
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime);
 
 ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetCpuTimes(struct ZrCpuTimes *pTimes);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* ZERO_TIMER_H */
 

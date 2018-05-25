@@ -15,6 +15,8 @@
 #if defined(ZR_LOGGER_SPECIFY_INTERNAL_LINKAGE)                                \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_LOGGER_LINKAGE static
+#elif defined(__cplusplus)
+#define ZRP_LOGGER_LINKAGE extern "C"
 #else
 #define ZRP_LOGGER_LINKAGE extern
 #endif
@@ -26,10 +28,6 @@ enum ZrLogLevel {
     ZR_LOG_LEVEL_TRACE = 3,
     ZR_LOG_LEVEL_DEBUG = 4
 };
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 
 ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
@@ -44,10 +42,6 @@ zrLogVaList(enum ZrLogLevel level,
             int line,
             const char *pFormat,
             va_list args);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* ZERO_LOGGER_H */
 
