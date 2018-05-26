@@ -147,26 +147,26 @@ struct ZrpAllocatorAlignmentOfHelper {
 #define ZRP_ALLOCATOR_GET_ALIGNED_BLOCK(pBuffer, offset)                       \
     (void *)((unsigned char *)(pBuffer) - (offset))
 #define ZRP_ALLOCATOR_GET_ALIGNED_HEADER(pBuffer)                              \
-    ((ZrpAllocatorAlignedHeader *)(pBuffer))[-1]
+    ((struct ZrpAllocatorAlignedHeader *)(pBuffer))[-1]
 #define ZRP_ALLOCATOR_GET_ALIGNED_BUFFER(pBlock, alignment)                    \
     (void *)((uintptr_t)((unsigned char *)(pBlock) + (alignment)-1             \
-                         + sizeof(ZrpAllocatorAlignedHeader))                  \
+                         + sizeof(struct ZrpAllocatorAlignedHeader))           \
              & ~(uintptr_t)((alignment)-1))
 
 #define ZRP_ALLOCATOR_GET_ALIGNED_BLOCK_SIZE(size, alignment)                  \
-    (size) + (alignment)-1 + sizeof(ZrpAllocatorAlignedHeader)
+    (size) + (alignment)-1 + sizeof(struct ZrpAllocatorAlignedHeader)
 
-typedef struct ZrpAllocatorAlignedHeader {
+struct ZrpAllocatorAlignedHeader {
     ptrdiff_t offset;
     size_t size;
 #if ZRP_ALLOCATOR_DEBUGGING
     size_t alignment;
 #endif /* ZRP_ALLOCATOR_DEBUGGING */
-} ZrpAllocatorAlignedHeader;
+};
 
 typedef char zrp_allocator_invalid_aligned_header_alignment
     [ZRP_ALLOCATOR_IS_POWER_OF_TWO(
-         ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader))
+         ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader))
          ? 1
          : -1];
 typedef char zrp_allocator_invalid_void_pointer_alignment
@@ -179,8 +179,9 @@ typedef char zrp_allocator_invalid_void_pointer_alignment
    and is also guaranteed to provide correct alignment for the block header.
 */
 static const size_t zrpAllocatorMinAlignment
-    = ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader) > sizeof(void *)
-          ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(ZrpAllocatorAlignedHeader)
+    = ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader)
+              > sizeof(void *)
+          ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
 static int
@@ -226,7 +227,7 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
     void *pBlock;
-    ZrpAllocatorAlignedHeader *pHeader;
+    struct ZrpAllocatorAlignedHeader *pHeader;
 
     if (size == 0 || !zrpAllocatorIsPowerOfTwo(alignment)) {
         return NULL;
@@ -258,10 +259,10 @@ ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
 {
     void *pBuffer;
-    ZrpAllocatorAlignedHeader originalHeader;
+    struct ZrpAllocatorAlignedHeader originalHeader;
     void *pOriginalBlock;
     void *pBlock;
-    ZrpAllocatorAlignedHeader *pHeader;
+    struct ZrpAllocatorAlignedHeader *pHeader;
 
     if (pOriginalBuffer == NULL) {
         return zrAllocateAligned(size, alignment);
@@ -320,7 +321,7 @@ zrReallocateAligned(void *pOriginalBuffer, ZrSize size, ZrSize alignment)
 ZRP_ALLOCATOR_LINKAGE void
 zrFreeAligned(void *pBuffer)
 {
-    ZrpAllocatorAlignedHeader *pHeader;
+    struct ZrpAllocatorAlignedHeader *pHeader;
 
     if (pBuffer == NULL) {
         return;

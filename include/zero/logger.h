@@ -78,11 +78,14 @@ extern "C" {
 #endif /* __cplusplus */
 
 ZRP_LOGGER_LINKAGE void
-zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
-    ZRP_MAYBE_UNUSED;
+zrLog(enum ZrLogLevel level,
+      const char *pFile,
+      int line,
+      const char *pFormat,
+      ...) ZRP_MAYBE_UNUSED;
 
 ZRP_LOGGER_LINKAGE void
-zrLogVaList(ZrLogLevel level,
+zrLogVaList(enum ZrLogLevel level,
             const char *pFile,
             int line,
             const char *pFormat,
@@ -120,7 +123,7 @@ zrLogVaList(ZrLogLevel level,
 #endif
 
 #if ZRP_LOGGER_COLORING
-typedef enum ZrpLoggerAnsiColor {
+enum ZrpLoggerAnsiColor {
     ZRP_LOGGER_ANSI_COLOR_RESET = 0,
     ZRP_LOGGER_ANSI_COLOR_BLACK = 1,
     ZRP_LOGGER_ANSI_COLOR_RED = 2,
@@ -178,7 +181,7 @@ zrpLoggerGetLogLevelColor(enum ZrLogLevel level)
 }
 
 static const char *
-zrpLoggerGetAnsiColorString(ZrpLoggerAnsiColor color)
+zrpLoggerGetAnsiColorString(enum ZrpLoggerAnsiColor color)
 {
     switch (color) {
         case ZRP_LOGGER_ANSI_COLOR_RESET:
@@ -219,7 +222,11 @@ zrpLoggerGetAnsiColorString(ZrpLoggerAnsiColor color)
 #endif /* ZRP_LOGGER_COLORING */
 
 ZRP_LOGGER_LINKAGE void
-zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
+zrLog(enum ZrLogLevel level,
+      const char *pFile,
+      int line,
+      const char *pFormat,
+      ...)
 {
     va_list args;
 
@@ -232,7 +239,7 @@ zrLog(ZrLogLevel level, const char *pFile, int line, const char *pFormat, ...)
 }
 
 ZRP_LOGGER_LINKAGE void
-zrLogVaList(ZrLogLevel level,
+zrLogVaList(enum ZrLogLevel level,
             const char *pFile,
             int line,
             const char *pFormat,
@@ -249,7 +256,7 @@ zrLogVaList(ZrLogLevel level,
 
 #if ZRP_LOGGER_COLORING
     if (isatty(fileno(stderr))) {
-        ZrpLoggerAnsiColor levelColor;
+        enum ZrpLoggerAnsiColor levelColor;
 
         levelColor = zrpLoggerGetLogLevelColor(level);
         pLevelColorStart = zrpLoggerGetAnsiColorString(levelColor);

@@ -195,7 +195,7 @@ typedef char
 
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
-typedef enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 } ZrStatus;
+enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 };
 #endif /* ZRP_STATUS_DEFINED */
 
 #if defined(ZR_TIMER_SPECIFY_INTERNAL_LINKAGE)                                 \
@@ -207,20 +207,20 @@ typedef enum ZrStatus { ZR_SUCCESS = 0, ZR_ERROR = -1 } ZrStatus;
 
 #define ZR_TIMER_TICKS_PER_SECOND 1000000000ull
 
-typedef struct ZrCpuTimes {
+struct ZrCpuTimes {
     ZrUint64 user;
     ZrUint64 system;
-} ZrCpuTimes;
+};
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-ZRP_TIMER_LINKAGE ZrStatus
+ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime) ZRP_MAYBE_UNUSED;
 
-ZRP_TIMER_LINKAGE ZrStatus
-zrGetCpuTimes(ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
+ZRP_TIMER_LINKAGE enum ZrStatus
+zrGetCpuTimes(struct ZrCpuTimes *pTimes) ZRP_MAYBE_UNUSED;
 
 #ifdef __cplusplus
 }
@@ -273,7 +273,7 @@ typedef char zrp_timer_unsupported_platform[-1];
     than 2^53, which corresponds to approximatively 104 days.
 */
 
-ZRP_TIMER_LINKAGE ZrStatus
+ZRP_TIMER_LINKAGE enum ZrStatus
 zrGetRealTime(ZrUint64 *pTime)
 {
     ZR_TIMER_ASSERT(pTime != NULL);
@@ -350,8 +350,8 @@ zrGetRealTime(ZrUint64 *pTime)
     return ZR_ERROR;
 }
 
-ZRP_TIMER_LINKAGE ZrStatus
-zrGetCpuTimes(ZrCpuTimes *pTimes)
+ZRP_TIMER_LINKAGE enum ZrStatus
+zrGetCpuTimes(struct ZrCpuTimes *pTimes)
 {
     ZR_TIMER_ASSERT(pTimes != NULL);
 
