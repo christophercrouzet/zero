@@ -19,12 +19,12 @@
 #define ZRP_LOGGER_LINKAGE extern
 #endif
 
-typedef enum ZrLogLevel {
-    ZR_LOG_LEVEL_DEBUG = 0,
-    ZR_LOG_LEVEL_INFO = 1,
-    ZR_LOG_LEVEL_WARNING = 2,
-    ZR_LOG_LEVEL_ERROR = 3
-} ZrLogLevel;
+enum ZrLogLevel {
+    ZR_LOG_LEVEL_ERROR = 0,
+    ZR_LOG_LEVEL_WARNING = 1,
+    ZR_LOG_LEVEL_INFO = 2,
+    ZR_LOG_LEVEL_DEBUG = 3
+};
 
 #ifdef __cplusplus
 extern "C" {
@@ -91,39 +91,39 @@ typedef enum ZrpLoggerAnsiColor {
     ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN = 14,
     ZRP_LOGGER_ANSI_COLOR_ENUM_LAST = ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN,
     ZRP_LOGGER_ANSI_COLOR_ENUM_COUNT = ZRP_LOGGER_ANSI_COLOR_ENUM_LAST + 1
-} ZrpLoggerAnsiColor;
+};
 #endif /* ZRP_LOGGER_COLORING */
 
 static const char *
-zrpLoggerGetLogLevelString(ZrLogLevel level)
+zrpLoggerGetLogLevelString(enum ZrLogLevel level)
 {
     switch (level) {
-        case ZR_LOG_LEVEL_DEBUG:
-            return "debug";
-        case ZR_LOG_LEVEL_INFO:
-            return "info";
-        case ZR_LOG_LEVEL_WARNING:
-            return "warning";
         case ZR_LOG_LEVEL_ERROR:
             return "error";
+        case ZR_LOG_LEVEL_WARNING:
+            return "warning";
+        case ZR_LOG_LEVEL_INFO:
+            return "info";
+        case ZR_LOG_LEVEL_DEBUG:
+            return "debug";
         default:
             return "invalid";
     }
 }
 
 #if ZRP_LOGGER_COLORING
-static ZrpLoggerAnsiColor
-zrpLoggerGetLogLevelColor(ZrLogLevel level)
+static enum ZrpLoggerAnsiColor
+zrpLoggerGetLogLevelColor(enum ZrLogLevel level)
 {
     switch (level) {
-        case ZR_LOG_LEVEL_DEBUG:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA;
-        case ZR_LOG_LEVEL_INFO:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
-        case ZR_LOG_LEVEL_WARNING:
-            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW;
         case ZR_LOG_LEVEL_ERROR:
             return ZRP_LOGGER_ANSI_COLOR_BRIGHT_RED;
+        case ZR_LOG_LEVEL_WARNING:
+            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_YELLOW;
+        case ZR_LOG_LEVEL_INFO:
+            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_CYAN;
+        case ZR_LOG_LEVEL_DEBUG:
+            return ZRP_LOGGER_ANSI_COLOR_BRIGHT_MAGENTA;
         default:
             ZR_LOGGER_ASSERT(0);
             return ZRP_LOGGER_ANSI_COLOR_RESET;
