@@ -50,15 +50,6 @@
 #endif
 #endif /* ZRP_PLATFORM_DEFINED */
 
-#ifndef ZRP_UNUSED_DEFINED
-#define ZRP_UNUSED_DEFINED
-#ifdef __GNUC__
-#define ZRP_MAYBE_UNUSED __attribute__((unused))
-#else
-#define ZRP_MAYBE_UNUSED
-#endif
-#endif /* ZRP_UNUSED_DEFINED */
-
 #if defined(ZR_LOGGER_SPECIFY_INTERNAL_LINKAGE)                                \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
 #define ZRP_LOGGER_LINKAGE static
@@ -104,6 +95,15 @@ zrLogVaList(enum ZrLogLevel level,
 #include <assert.h>
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
+
+#ifndef ZRP_UNUSED_DEFINED
+#define ZRP_UNUSED_DEFINED
+#ifdef __GNUC__
+#define ZRP_MAYBE_UNUSED __attribute__((unused))
+#else
+#define ZRP_MAYBE_UNUSED
+#endif
+#endif /* ZRP_UNUSED_DEFINED */
 
 #ifndef ZRP_LOGGER_DEFINED
 #define ZRP_LOGGER_DEFINED

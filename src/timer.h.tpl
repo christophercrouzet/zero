@@ -10,7 +10,6 @@
 /* @include "partials/environment.h" */
 /* @include "partials/platform.h" */
 /* @include "partials/types.h" */
-/* @include "partials/unused.h" */
 
 /* @include "partials/status.h" */
 
@@ -51,6 +50,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
 
+/* @include "partials/unused.h" */
 /* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
 

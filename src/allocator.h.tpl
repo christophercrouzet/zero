@@ -10,7 +10,6 @@
 /* @include "partials/environment.h" */
 /* @include "partials/platform.h" */
 /* @include "partials/types.h" */
-/* @include "partials/unused.h" */
 
 #if defined(ZR_ALLOCATOR_SPECIFY_INTERNAL_LINKAGE)                             \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
@@ -71,6 +70,7 @@ zrFreeAligned(const void *pMemory);
 #define ZR_FREE free
 #endif /* ZR_FREE */
 
+/* @include "partials/unused.h" */
 /* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
 

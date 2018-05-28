@@ -10,7 +10,6 @@
 #define ZR_LOGGER_PATCH_VERSION 1
 
 /* @include "partials/platform.h" */
-/* @include "partials/unused.h" */
 
 #if defined(ZR_LOGGER_SPECIFY_INTERNAL_LINKAGE)                                \
     || defined(ZR_SPECIFY_INTERNAL_LINKAGE)
@@ -58,6 +57,7 @@ zrLogVaList(enum ZrLogLevel level,
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
 
+/* @include "partials/unused.h" */
 /* @include "partials/logger.h" */
 
 ZRP_MAYBE_UNUSED ZRP_LOGGER_LINKAGE void

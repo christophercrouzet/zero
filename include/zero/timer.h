@@ -184,15 +184,6 @@ typedef char
 #endif /* ZR_DEFINE_IMPLEMENTATION */
 #endif /* ZRP_BASIC_TYPES_DEFINED */
 
-#ifndef ZRP_UNUSED_DEFINED
-#define ZRP_UNUSED_DEFINED
-#ifdef __GNUC__
-#define ZRP_MAYBE_UNUSED __attribute__((unused))
-#else
-#define ZRP_MAYBE_UNUSED
-#endif
-#endif /* ZRP_UNUSED_DEFINED */
-
 #ifndef ZRP_STATUS_DEFINED
 #define ZRP_STATUS_DEFINED
 enum ZrStatus {
@@ -239,6 +230,15 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #include <assert.h>
 #define ZR_ASSERT assert
 #endif /* ZR_ASSERT */
+
+#ifndef ZRP_UNUSED_DEFINED
+#define ZRP_UNUSED_DEFINED
+#ifdef __GNUC__
+#define ZRP_MAYBE_UNUSED __attribute__((unused))
+#else
+#define ZRP_MAYBE_UNUSED
+#endif
+#endif /* ZRP_UNUSED_DEFINED */
 
 #ifndef ZRP_LOGGER_DEFINED
 #define ZRP_LOGGER_DEFINED
