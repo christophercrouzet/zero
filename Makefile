@@ -83,7 +83,6 @@ INCLUDES := $(TEMPLATES:src/%.h.tpl=include/$(PROJECT)/%.h)
 $(INCLUDES): include/$(PROJECT)/%.h: src/%.h.tpl
 	@ mkdir -p $(@D)
 	@ $(firstword $(BUILD_DIRS))/bin/tools/build $< $@
-	@ clang-format -i -style=file $@
 
 $(INCLUDES): tool-build
 
@@ -91,7 +90,7 @@ includes: $(INCLUDES)
 
 .PHONY: includes
 
-FORMAT_FILES += $(TEMPLATES) $(wildcard src/partials/*.h)
+FORMAT_FILES += $(TEMPLATES) $(INCLUDES) $(wildcard src/partials/*.h)
 TIDY_FILES += $(INCLUDES)
 
 # ------------------------------------------------------------------------------
