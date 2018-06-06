@@ -29,11 +29,23 @@ endif()
 # ------------------------------------------------------------------------------
 
 macro(zr_add_library target)
+    set(ZR_ADD_LIBRARY_OPTIONS)
+    set(ZR_ADD_LIBRARY_SINGLE_VALUE_ARGS)
+    set(ZR_ADD_LIBRARY_MULTI_VALUE_ARGS DEPENDS)
+    cmake_parse_arguments(
+        ZR_ADD_LIBRARY
+        "${ZR_ADD_LIBRARY_OPTIONS}"
+        "${ZR_ADD_LIBRARY_SINGLE_VALUE_ARGS}"
+        "${ZR_ADD_LIBRARY_MULTI_VALUE_ARGS}"
+        ${ARGN})
+
     add_library(${target} INTERFACE)
     target_include_directories(${target}
         INTERFACE
             "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
             "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+    target_link_libraries(${target}
+        INTERFACE ${ZR_ADD_LIBRARY_DEPENDS})
     install(
         TARGETS ${target}
         EXPORT ${PROJECT_NAME}Targets)
