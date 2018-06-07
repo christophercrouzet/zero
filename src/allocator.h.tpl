@@ -168,11 +168,13 @@ static const size_t zrpAllocatorMinAlignment
           ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
-ZRP_MAYBE_UNUSED static int
-zrpAllocatorIsPowerOfTwo(size_t x)
+ZRP_MAYBE_UNUSED static void
+zrpAllocatorIsPowerOfTwo(int *pResult, size_t x)
 {
+    ZR_ASSERT(pResult != NULL);
+
     /* Decrement and compare approach. */
-    return (x != 0) && !(x & (x - 1));
+    *pResult = (x != 0) && !(x & (x - 1));
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
@@ -211,11 +213,13 @@ zrFree(const void *pMemory)
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
+    int valid;
     void *pBuffer;
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
+    zrpAllocatorIsPowerOfTwo(&valid, (size_t)alignment);
+    ZR_ASSERT(valid);
 
     if (size == 0) {
         ZRP_LOG_INFO("allocation called with a size of 0\n");
@@ -248,13 +252,15 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 {
+    int valid;
     void *pBuffer;
     struct ZrpAllocatorAlignedHeader originalHeader;
     void *pOriginalBlock;
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
+    zrpAllocatorIsPowerOfTwo(&valid, (size_t)alignment);
+    ZR_ASSERT(valid);
 
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);

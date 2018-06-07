@@ -291,84 +291,112 @@ enum ZrpLoggerStyle {
 };
 #endif /* ZRP_LOGGER_STYLING */
 
-static const char *
-zrpLoggerGetLogLevelName(enum ZrpLogLevel level)
+static void
+zrpLoggerGetLogLevelName(const char **ppName, enum ZrpLogLevel level)
 {
+    ZR_ASSERT(ppName != NULL);
+
     switch (level) {
         case ZRP_LOG_LEVEL_ERROR:
-            return "error";
+            *ppName = "error";
+            return;
         case ZRP_LOG_LEVEL_WARNING:
-            return "warning";
+            *ppName = "warning";
+            return;
         case ZRP_LOG_LEVEL_INFO:
-            return "info";
+            *ppName = "info";
+            return;
         case ZRP_LOG_LEVEL_TRACE:
-            return "trace";
+            *ppName = "trace";
+            return;
         case ZRP_LOG_LEVEL_DEBUG:
-            return "debug";
+            *ppName = "debug";
+            return;
         default:
             ZR_ASSERT(0);
-            return "invalid";
     }
 }
 
 #if ZRP_LOGGER_STYLING
-static enum ZrpLoggerStyle
-zrpLoggerGetLogLevelStyle(enum ZrpLogLevel level)
+static void
+zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrpLogLevel level)
 {
+    ZR_ASSERT(pStyle != NULL);
+
     switch (level) {
         case ZRP_LOG_LEVEL_ERROR:
-            return ZRP_LOGGER_STYLE_BRIGHT_RED;
+            *pStyle = ZRP_LOGGER_STYLE_BRIGHT_RED;
+            return;
         case ZRP_LOG_LEVEL_WARNING:
-            return ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
+            *pStyle = ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
+            return;
         case ZRP_LOG_LEVEL_INFO:
-            return ZRP_LOGGER_STYLE_BRIGHT_GREEN;
+            *pStyle = ZRP_LOGGER_STYLE_BRIGHT_GREEN;
+            return;
         case ZRP_LOG_LEVEL_TRACE:
-            return ZRP_LOGGER_STYLE_BRIGHT_CYAN;
+            *pStyle = ZRP_LOGGER_STYLE_BRIGHT_CYAN;
+            return;
         case ZRP_LOG_LEVEL_DEBUG:
-            return ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
+            *pStyle = ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
+            return;
         default:
             ZR_ASSERT(0);
-            return ZRP_LOGGER_STYLE_RESET;
     };
 }
 
-static const char *
-zrpLoggerGetStyleAnsiCode(enum ZrpLoggerStyle style)
+static void
+zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
 {
+    ZR_ASSERT(ppCode != NULL);
+
     switch (style) {
         case ZRP_LOGGER_STYLE_RESET:
-            return "\x1b[0m";
+            *ppCode = "\x1b[0m";
+            return;
         case ZRP_LOGGER_STYLE_BLACK:
-            return "\x1b[30m";
+            *ppCode = "\x1b[30m";
+            return;
         case ZRP_LOGGER_STYLE_RED:
-            return "\x1b[31m";
+            *ppCode = "\x1b[31m";
+            return;
         case ZRP_LOGGER_STYLE_GREEN:
-            return "\x1b[32m";
+            *ppCode = "\x1b[32m";
+            return;
         case ZRP_LOGGER_STYLE_YELLOW:
-            return "\x1b[33m";
+            *ppCode = "\x1b[33m";
+            return;
         case ZRP_LOGGER_STYLE_BLUE:
-            return "\x1b[34m";
+            *ppCode = "\x1b[34m";
+            return;
         case ZRP_LOGGER_STYLE_MAGENTA:
-            return "\x1b[35m";
+            *ppCode = "\x1b[35m";
+            return;
         case ZRP_LOGGER_STYLE_CYAN:
-            return "\x1b[36m";
+            *ppCode = "\x1b[36m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_BLACK:
-            return "\x1b[1;30m";
+            *ppCode = "\x1b[1;30m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_RED:
-            return "\x1b[1;31m";
+            *ppCode = "\x1b[1;31m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_GREEN:
-            return "\x1b[1;32m";
+            *ppCode = "\x1b[1;32m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_YELLOW:
-            return "\x1b[1;33m";
+            *ppCode = "\x1b[1;33m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_BLUE:
-            return "\x1b[1;34m";
+            *ppCode = "\x1b[1;34m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_MAGENTA:
-            return "\x1b[1;35m";
+            *ppCode = "\x1b[1;35m";
+            return;
         case ZRP_LOGGER_STYLE_BRIGHT_CYAN:
-            return "\x1b[1;36m";
+            *ppCode = "\x1b[1;36m";
+            return;
         default:
             ZR_ASSERT(0);
-            return "";
     }
 }
 #endif /* ZRP_LOGGER_STYLING */
@@ -387,15 +415,15 @@ zrpLogVaList(enum ZrpLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    pLevelName = zrpLoggerGetLogLevelName(level);
+    zrpLoggerGetLogLevelName(&pLevelName, level);
 
 #if ZRP_LOGGER_STYLING
     if (isatty(fileno(stderr))) {
         enum ZrpLoggerStyle levelStyle;
 
-        levelStyle = zrpLoggerGetLogLevelStyle(level);
-        pLevelStyleStart = zrpLoggerGetStyleAnsiCode(levelStyle);
-        pLevelStyleEnd = zrpLoggerGetStyleAnsiCode(ZRP_LOGGER_STYLE_RESET);
+        zrpLoggerGetLogLevelStyle(&levelStyle, level);
+        zrpLoggerGetStyleAnsiCode(&pLevelStyleStart, levelStyle);
+        zrpLoggerGetStyleAnsiCode(&pLevelStyleEnd, ZRP_LOGGER_STYLE_RESET);
     } else {
         pLevelStyleStart = pLevelStyleEnd = "";
     }
@@ -574,11 +602,13 @@ static const size_t zrpAllocatorMinAlignment
           ? ZRP_ALLOCATOR_GET_ALIGNMENT_OF(struct ZrpAllocatorAlignedHeader)
           : sizeof(void *);
 
-ZRP_MAYBE_UNUSED static int
-zrpAllocatorIsPowerOfTwo(size_t x)
+ZRP_MAYBE_UNUSED static void
+zrpAllocatorIsPowerOfTwo(int *pResult, size_t x)
 {
+    ZR_ASSERT(pResult != NULL);
+
     /* Decrement and compare approach. */
-    return (x != 0) && !(x & (x - 1));
+    *pResult = (x != 0) && !(x & (x - 1));
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
@@ -617,11 +647,13 @@ zrFree(const void *pMemory)
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrAllocateAligned(ZrSize size, ZrSize alignment)
 {
+    int valid;
     void *pBuffer;
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
+    zrpAllocatorIsPowerOfTwo(&valid, (size_t)alignment);
+    ZR_ASSERT(valid);
 
     if (size == 0) {
         ZRP_LOG_INFO("allocation called with a size of 0\n");
@@ -654,13 +686,15 @@ zrAllocateAligned(ZrSize size, ZrSize alignment)
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
 zrReallocateAligned(void *pOriginal, ZrSize size, ZrSize alignment)
 {
+    int valid;
     void *pBuffer;
     struct ZrpAllocatorAlignedHeader originalHeader;
     void *pOriginalBlock;
     void *pBlock;
     struct ZrpAllocatorAlignedHeader *pHeader;
 
-    ZR_ASSERT(zrpAllocatorIsPowerOfTwo((size_t)alignment));
+    zrpAllocatorIsPowerOfTwo(&valid, (size_t)alignment);
+    ZR_ASSERT(valid);
 
     if (pOriginal == NULL) {
         return zrAllocateAligned(size, alignment);
