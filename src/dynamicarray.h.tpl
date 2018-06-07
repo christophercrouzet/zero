@@ -204,7 +204,7 @@
 
 #define ZRP_DYNAMICARRAY_DEFINE_GET_SIZE_FUNCTION(name, type)                  \
     ZRP_MAYBE_UNUSED ZRP_DYNAMICARRAY_LINKAGE void zrGet##name##Size(          \
-        const type *pArray, ZrSize *pSize)                                     \
+        ZrSize *pSize, const type *pArray)                                     \
     {                                                                          \
         ZR_ASSERT(pArray != NULL);                                             \
                                                                                \
@@ -215,7 +215,7 @@
 
 #define ZRP_DYNAMICARRAY_DEFINE_GET_CAPACITY_FUNCTION(name, type)              \
     ZRP_MAYBE_UNUSED ZRP_DYNAMICARRAY_LINKAGE void zrGet##name##Capacity(      \
-        const type *pArray, ZrSize *pCapacity)                                 \
+        ZrSize *pCapacity, const type *pArray)                                 \
     {                                                                          \
         ZR_ASSERT(pArray != NULL);                                             \
                                                                                \
