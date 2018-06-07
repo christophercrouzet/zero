@@ -144,8 +144,9 @@
 #endif /* ZR_FREE */
 
 /* @include "partials/unused.h" */
-/* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
+/* @include "partials/loglevel.h" */
+/* @include "partials/logger.h" */
 
 #define ZRP_DYNAMICARRAY_GET_BLOCK(pBuffer)                                    \
     ((void *)&((struct ZrpDynamicArrayHeader *)pBuffer)[-1])

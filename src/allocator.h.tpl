@@ -71,8 +71,9 @@ zrFreeAligned(const void *pMemory);
 #endif /* ZR_FREE */
 
 /* @include "partials/unused.h" */
-/* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
+/* @include "partials/loglevel.h" */
+/* @include "partials/logger.h" */
 
 #if defined(ZR_ALLOCATOR_ENABLE_DEBUGGING) || defined(ZR_ENABLE_DEBUGGING)
 #define ZRP_ALLOCATOR_DEBUGGING 1

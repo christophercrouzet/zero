@@ -20,13 +20,7 @@
 #define ZRP_LOGGER_LINKAGE extern
 #endif
 
-enum ZrLogLevel {
-    ZR_LOG_LEVEL_ERROR = 0,
-    ZR_LOG_LEVEL_WARNING = 1,
-    ZR_LOG_LEVEL_INFO = 2,
-    ZR_LOG_LEVEL_TRACE = 3,
-    ZR_LOG_LEVEL_DEBUG = 4
-};
+/* @include "partials/loglevel.h" */
 
 ZRP_LOGGER_LINKAGE void
 zrLog(enum ZrLogLevel level,
@@ -72,14 +66,8 @@ zrLog(enum ZrLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    ZR_ASSERT((int)ZR_LOG_LEVEL_ERROR == (int)ZRP_LOG_LEVEL_ERROR);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_WARNING == (int)ZRP_LOG_LEVEL_WARNING);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_INFO == (int)ZRP_LOG_LEVEL_INFO);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_TRACE == (int)ZRP_LOG_LEVEL_TRACE);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_DEBUG == (int)ZRP_LOG_LEVEL_DEBUG);
-
     va_start(args, pFormat);
-    zrpLogVaList((enum ZrpLogLevel)level, pFile, line, pFormat, args);
+    zrpLogVaList(level, pFile, line, pFormat, args);
     va_end(args);
 }
 
@@ -93,13 +81,7 @@ zrLogVaList(enum ZrLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    ZR_ASSERT((int)ZR_LOG_LEVEL_ERROR == (int)ZRP_LOG_LEVEL_ERROR);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_WARNING == (int)ZRP_LOG_LEVEL_WARNING);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_INFO == (int)ZRP_LOG_LEVEL_INFO);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_TRACE == (int)ZRP_LOG_LEVEL_TRACE);
-    ZR_ASSERT((int)ZR_LOG_LEVEL_DEBUG == (int)ZRP_LOG_LEVEL_DEBUG);
-
-    zrpLogVaList((enum ZrpLogLevel)level, pFile, line, pFormat, args);
+    zrpLogVaList(level, pFile, line, pFormat, args);
 }
 
 #endif /* ZRP_LOGGER_IMPLEMENTATION_DEFINED */

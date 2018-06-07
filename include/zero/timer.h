@@ -240,6 +240,67 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #endif
 #endif /* ZRP_UNUSED_DEFINED */
 
+#ifndef ZRP_LOGGING_DEFINED
+#define ZRP_LOGGING_DEFINED
+
+#if defined(ZR_SET_LOGGING_LEVEL_DEBUG)
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_DEBUG
+#elif defined(ZR_SET_LOGGING_LEVEL_TRACE)
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_TRACE
+#elif defined(ZR_SET_LOGGING_LEVEL_INFO)
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_INFO
+#elif defined(ZR_SET_LOGGING_LEVEL_WARNING)
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_WARNING
+#elif defined(ZR_SET_LOGGING_LEVEL_ERROR)
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_ERROR
+#elif defined(ZR_ENABLE_DEBUGGING)                                             \
+    || (!defined(ZR_DISABLE_DEBUGGING)                                         \
+        && (defined(DEBUG) || !defined(NDEBUG)))
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_DEBUG
+#else
+#define ZRP_LOGGING_LEVEL ZR_LOG_LEVEL_WARNING
+#endif
+
+#ifdef ZR_DISABLE_LOGGING
+#define ZRP_LOGGING 0
+#else
+#define ZRP_LOGGING 1
+#endif /* ZR_DISABLE_LOGGING */
+
+#ifndef ZR_LOG
+#define ZR_LOG(level, ...)                                                     \
+    do {                                                                       \
+        if (ZRP_LOGGING && level <= ZRP_LOGGING_LEVEL) {                       \
+            zrpLog(level, __FILE__, __LINE__, __VA_ARGS__);                    \
+        }                                                                      \
+    } while (0)
+#endif /* ZR_LOG */
+
+#define ZRP_LOG_DEBUG(...) ZR_LOG(ZR_LOG_LEVEL_DEBUG, __VA_ARGS__)
+
+#define ZRP_LOG_TRACE(...) ZR_LOG(ZR_LOG_LEVEL_TRACE, __VA_ARGS__)
+
+#define ZRP_LOG_INFO(...) ZR_LOG(ZR_LOG_LEVEL_INFO, __VA_ARGS__)
+
+#define ZRP_LOG_WARNING(...) ZR_LOG(ZR_LOG_LEVEL_WARNING, __VA_ARGS__)
+
+#define ZRP_LOG_ERROR(...) ZR_LOG(ZR_LOG_LEVEL_ERROR, __VA_ARGS__)
+
+#endif /* ZRP_LOGGING_DEFINED */
+
+#ifndef ZRP_LOGLEVEL_DEFINED
+#define ZRP_LOGLEVEL_DEFINED
+
+enum ZrLogLevel {
+    ZR_LOG_LEVEL_ERROR = 0,
+    ZR_LOG_LEVEL_WARNING = 1,
+    ZR_LOG_LEVEL_INFO = 2,
+    ZR_LOG_LEVEL_TRACE = 3,
+    ZR_LOG_LEVEL_DEBUG = 4
+};
+
+#endif /* ZRP_LOGLEVEL_DEFINED */
+
 #ifndef ZRP_LOGGER_DEFINED
 #define ZRP_LOGGER_DEFINED
 
@@ -250,14 +311,6 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #else
 #define ZRP_LOGGER_STYLING 0
 #endif
-
-enum ZrpLogLevel {
-    ZRP_LOG_LEVEL_ERROR = 0,
-    ZRP_LOG_LEVEL_WARNING = 1,
-    ZRP_LOG_LEVEL_INFO = 2,
-    ZRP_LOG_LEVEL_TRACE = 3,
-    ZRP_LOG_LEVEL_DEBUG = 4
-};
 
 #if ZRP_LOGGER_STYLING
 enum ZrpLoggerStyle {
@@ -280,24 +333,24 @@ enum ZrpLoggerStyle {
 #endif /* ZRP_LOGGER_STYLING */
 
 static void
-zrpLoggerGetLogLevelName(const char **ppName, enum ZrpLogLevel level)
+zrpLoggerGetLogLevelName(const char **ppName, enum ZrLogLevel level)
 {
     ZR_ASSERT(ppName != NULL);
 
     switch (level) {
-        case ZRP_LOG_LEVEL_ERROR:
+        case ZR_LOG_LEVEL_ERROR:
             *ppName = "error";
             return;
-        case ZRP_LOG_LEVEL_WARNING:
+        case ZR_LOG_LEVEL_WARNING:
             *ppName = "warning";
             return;
-        case ZRP_LOG_LEVEL_INFO:
+        case ZR_LOG_LEVEL_INFO:
             *ppName = "info";
             return;
-        case ZRP_LOG_LEVEL_TRACE:
+        case ZR_LOG_LEVEL_TRACE:
             *ppName = "trace";
             return;
-        case ZRP_LOG_LEVEL_DEBUG:
+        case ZR_LOG_LEVEL_DEBUG:
             *ppName = "debug";
             return;
         default:
@@ -307,24 +360,24 @@ zrpLoggerGetLogLevelName(const char **ppName, enum ZrpLogLevel level)
 
 #if ZRP_LOGGER_STYLING
 static void
-zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrpLogLevel level)
+zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrLogLevel level)
 {
     ZR_ASSERT(pStyle != NULL);
 
     switch (level) {
-        case ZRP_LOG_LEVEL_ERROR:
+        case ZR_LOG_LEVEL_ERROR:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_RED;
             return;
-        case ZRP_LOG_LEVEL_WARNING:
+        case ZR_LOG_LEVEL_WARNING:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
             return;
-        case ZRP_LOG_LEVEL_INFO:
+        case ZR_LOG_LEVEL_INFO:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_GREEN;
             return;
-        case ZRP_LOG_LEVEL_TRACE:
+        case ZR_LOG_LEVEL_TRACE:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_CYAN;
             return;
-        case ZRP_LOG_LEVEL_DEBUG:
+        case ZR_LOG_LEVEL_DEBUG:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
             return;
         default:
@@ -390,7 +443,7 @@ zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
 #endif /* ZRP_LOGGER_STYLING */
 
 ZRP_MAYBE_UNUSED static void
-zrpLogVaList(enum ZrpLogLevel level,
+zrpLogVaList(enum ZrLogLevel level,
              const char *pFile,
              int line,
              const char *pFormat,
@@ -430,7 +483,7 @@ zrpLogVaList(enum ZrpLogLevel level,
 }
 
 ZRP_MAYBE_UNUSED static void
-zrpLog(enum ZrpLogLevel level,
+zrpLog(enum ZrLogLevel level,
        const char *pFile,
        int line,
        const char *pFormat,
@@ -447,54 +500,6 @@ zrpLog(enum ZrpLogLevel level,
 }
 
 #endif /* ZRP_LOGGER_DEFINED */
-
-#ifndef ZRP_LOGGING_DEFINED
-#define ZRP_LOGGING_DEFINED
-
-#if defined(ZR_SET_LOGGING_LEVEL_DEBUG)
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_DEBUG
-#elif defined(ZR_SET_LOGGING_LEVEL_TRACE)
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_TRACE
-#elif defined(ZR_SET_LOGGING_LEVEL_INFO)
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_INFO
-#elif defined(ZR_SET_LOGGING_LEVEL_WARNING)
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_WARNING
-#elif defined(ZR_SET_LOGGING_LEVEL_ERROR)
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_ERROR
-#elif defined(ZR_ENABLE_DEBUGGING)                                             \
-    || (!defined(ZR_DISABLE_DEBUGGING)                                         \
-        && (defined(DEBUG) || !defined(NDEBUG)))
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_DEBUG
-#else
-#define ZRP_LOGGING_LEVEL ZRP_LOG_LEVEL_WARNING
-#endif
-
-#ifdef ZR_DISABLE_LOGGING
-#define ZRP_LOGGING 0
-#else
-#define ZRP_LOGGING 1
-#endif /* ZR_DISABLE_LOGGING */
-
-#ifndef ZR_LOG
-#define ZR_LOG(level, ...)                                                     \
-    do {                                                                       \
-        if (ZRP_LOGGING && level <= ZRP_LOGGING_LEVEL) {                       \
-            zrpLog(level, __FILE__, __LINE__, __VA_ARGS__);                    \
-        }                                                                      \
-    } while (0)
-#endif /* ZR_LOG */
-
-#define ZRP_LOG_DEBUG(...) ZR_LOG(ZRP_LOG_LEVEL_DEBUG, __VA_ARGS__)
-
-#define ZRP_LOG_TRACE(...) ZR_LOG(ZRP_LOG_LEVEL_TRACE, __VA_ARGS__)
-
-#define ZRP_LOG_INFO(...) ZR_LOG(ZRP_LOG_LEVEL_INFO, __VA_ARGS__)
-
-#define ZRP_LOG_WARNING(...) ZR_LOG(ZRP_LOG_LEVEL_WARNING, __VA_ARGS__)
-
-#define ZRP_LOG_ERROR(...) ZR_LOG(ZRP_LOG_LEVEL_ERROR, __VA_ARGS__)
-
-#endif /* ZRP_LOGGING_DEFINED */
 
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN

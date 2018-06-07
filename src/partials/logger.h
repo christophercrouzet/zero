@@ -9,14 +9,6 @@
 #define ZRP_LOGGER_STYLING 0
 #endif
 
-enum ZrpLogLevel {
-    ZRP_LOG_LEVEL_ERROR = 0,
-    ZRP_LOG_LEVEL_WARNING = 1,
-    ZRP_LOG_LEVEL_INFO = 2,
-    ZRP_LOG_LEVEL_TRACE = 3,
-    ZRP_LOG_LEVEL_DEBUG = 4
-};
-
 #if ZRP_LOGGER_STYLING
 enum ZrpLoggerStyle {
     ZRP_LOGGER_STYLE_RESET = 0,
@@ -38,24 +30,24 @@ enum ZrpLoggerStyle {
 #endif /* ZRP_LOGGER_STYLING */
 
 static void
-zrpLoggerGetLogLevelName(const char **ppName, enum ZrpLogLevel level)
+zrpLoggerGetLogLevelName(const char **ppName, enum ZrLogLevel level)
 {
     ZR_ASSERT(ppName != NULL);
 
     switch (level) {
-        case ZRP_LOG_LEVEL_ERROR:
+        case ZR_LOG_LEVEL_ERROR:
             *ppName = "error";
             return;
-        case ZRP_LOG_LEVEL_WARNING:
+        case ZR_LOG_LEVEL_WARNING:
             *ppName = "warning";
             return;
-        case ZRP_LOG_LEVEL_INFO:
+        case ZR_LOG_LEVEL_INFO:
             *ppName = "info";
             return;
-        case ZRP_LOG_LEVEL_TRACE:
+        case ZR_LOG_LEVEL_TRACE:
             *ppName = "trace";
             return;
-        case ZRP_LOG_LEVEL_DEBUG:
+        case ZR_LOG_LEVEL_DEBUG:
             *ppName = "debug";
             return;
         default:
@@ -65,24 +57,24 @@ zrpLoggerGetLogLevelName(const char **ppName, enum ZrpLogLevel level)
 
 #if ZRP_LOGGER_STYLING
 static void
-zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrpLogLevel level)
+zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrLogLevel level)
 {
     ZR_ASSERT(pStyle != NULL);
 
     switch (level) {
-        case ZRP_LOG_LEVEL_ERROR:
+        case ZR_LOG_LEVEL_ERROR:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_RED;
             return;
-        case ZRP_LOG_LEVEL_WARNING:
+        case ZR_LOG_LEVEL_WARNING:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_YELLOW;
             return;
-        case ZRP_LOG_LEVEL_INFO:
+        case ZR_LOG_LEVEL_INFO:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_GREEN;
             return;
-        case ZRP_LOG_LEVEL_TRACE:
+        case ZR_LOG_LEVEL_TRACE:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_CYAN;
             return;
-        case ZRP_LOG_LEVEL_DEBUG:
+        case ZR_LOG_LEVEL_DEBUG:
             *pStyle = ZRP_LOGGER_STYLE_BRIGHT_MAGENTA;
             return;
         default:
@@ -148,7 +140,7 @@ zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
 #endif /* ZRP_LOGGER_STYLING */
 
 ZRP_MAYBE_UNUSED static void
-zrpLogVaList(enum ZrpLogLevel level,
+zrpLogVaList(enum ZrLogLevel level,
              const char *pFile,
              int line,
              const char *pFormat,
@@ -188,7 +180,7 @@ zrpLogVaList(enum ZrpLogLevel level,
 }
 
 ZRP_MAYBE_UNUSED static void
-zrpLog(enum ZrpLogLevel level,
+zrpLog(enum ZrLogLevel level,
        const char *pFile,
        int line,
        const char *pFormat,

@@ -51,8 +51,9 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #endif /* ZR_ASSERT */
 
 /* @include "partials/unused.h" */
-/* @include "partials/logger.h" */
 /* @include "partials/logging.h" */
+/* @include "partials/loglevel.h" */
+/* @include "partials/logger.h" */
 
 #if defined(ZRP_PLATFORM_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
