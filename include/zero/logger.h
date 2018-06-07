@@ -252,11 +252,11 @@ zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
 #endif /* ZRP_LOGGER_STYLING */
 
 ZRP_MAYBE_UNUSED static void
-zrpLogVaList(enum ZrLogLevel level,
-             const char *pFile,
-             int line,
-             const char *pFormat,
-             va_list args)
+zrpLoggerLogVaList(enum ZrLogLevel level,
+                   const char *pFile,
+                   int line,
+                   const char *pFormat,
+                   va_list args)
 {
     const char *pLevelName;
     const char *pLevelStyleStart;
@@ -292,11 +292,11 @@ zrpLogVaList(enum ZrLogLevel level,
 }
 
 ZRP_MAYBE_UNUSED static void
-zrpLog(enum ZrLogLevel level,
-       const char *pFile,
-       int line,
-       const char *pFormat,
-       ...)
+zrpLoggerLog(enum ZrLogLevel level,
+             const char *pFile,
+             int line,
+             const char *pFormat,
+             ...)
 {
     va_list args;
 
@@ -304,7 +304,7 @@ zrpLog(enum ZrLogLevel level,
     ZR_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
     va_end(args);
 }
 
@@ -323,7 +323,7 @@ zrLog(enum ZrLogLevel level,
     ZR_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
     va_end(args);
 }
 
@@ -337,7 +337,7 @@ zrLogVaList(enum ZrLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
 }
 
 #endif /* ZRP_LOGGER_IMPLEMENTATION_DEFINED */

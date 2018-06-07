@@ -67,7 +67,7 @@ zrLog(enum ZrLogLevel level,
     ZR_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
     va_end(args);
 }
 
@@ -81,7 +81,7 @@ zrLogVaList(enum ZrLogLevel level,
     ZR_ASSERT(pFile != NULL);
     ZR_ASSERT(pFormat != NULL);
 
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
 }
 
 #endif /* ZRP_LOGGER_IMPLEMENTATION_DEFINED */

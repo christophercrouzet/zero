@@ -29,7 +29,7 @@
 #define ZR_LOG(level, ...)                                                     \
     do {                                                                       \
         if (ZRP_LOGGING && level <= ZRP_LOGGING_LEVEL) {                       \
-            zrpLog(level, __FILE__, __LINE__, __VA_ARGS__);                    \
+            zrpLoggerLog(level, __FILE__, __LINE__, __VA_ARGS__);              \
         }                                                                      \
     } while (0)
 #endif /* ZR_LOG */

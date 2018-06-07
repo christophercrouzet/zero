@@ -271,7 +271,7 @@ zrGetCpuTimes(struct ZrCpuTimes *pTimes);
 #define ZR_LOG(level, ...)                                                     \
     do {                                                                       \
         if (ZRP_LOGGING && level <= ZRP_LOGGING_LEVEL) {                       \
-            zrpLog(level, __FILE__, __LINE__, __VA_ARGS__);                    \
+            zrpLoggerLog(level, __FILE__, __LINE__, __VA_ARGS__);              \
         }                                                                      \
     } while (0)
 #endif /* ZR_LOG */
@@ -443,11 +443,11 @@ zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
 #endif /* ZRP_LOGGER_STYLING */
 
 ZRP_MAYBE_UNUSED static void
-zrpLogVaList(enum ZrLogLevel level,
-             const char *pFile,
-             int line,
-             const char *pFormat,
-             va_list args)
+zrpLoggerLogVaList(enum ZrLogLevel level,
+                   const char *pFile,
+                   int line,
+                   const char *pFormat,
+                   va_list args)
 {
     const char *pLevelName;
     const char *pLevelStyleStart;
@@ -483,11 +483,11 @@ zrpLogVaList(enum ZrLogLevel level,
 }
 
 ZRP_MAYBE_UNUSED static void
-zrpLog(enum ZrLogLevel level,
-       const char *pFile,
-       int line,
-       const char *pFormat,
-       ...)
+zrpLoggerLog(enum ZrLogLevel level,
+             const char *pFile,
+             int line,
+             const char *pFormat,
+             ...)
 {
     va_list args;
 
@@ -495,7 +495,7 @@ zrpLog(enum ZrLogLevel level,
     ZR_ASSERT(pFormat != NULL);
 
     va_start(args, pFormat);
-    zrpLogVaList(level, pFile, line, pFormat, args);
+    zrpLoggerLogVaList(level, pFile, line, pFormat, args);
     va_end(args);
 }
 
