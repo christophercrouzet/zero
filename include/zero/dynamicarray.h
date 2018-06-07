@@ -400,12 +400,12 @@ enum ZrLogLevel {
 #if !defined(ZR_DISABLE_LOG_STYLING) && defined(ZRP_PLATFORM_UNIX)             \
     && defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 1
 #include <unistd.h>
-#define ZRP_LOGGER_STYLING 1
+#define ZRP_LOGGER_LOG_STYLING 1
 #else
-#define ZRP_LOGGER_STYLING 0
+#define ZRP_LOGGER_LOG_STYLING 0
 #endif
 
-#if ZRP_LOGGER_STYLING
+#if ZRP_LOGGER_LOG_STYLING
 enum ZrpLoggerStyle {
     ZRP_LOGGER_STYLE_RESET = 0,
     ZRP_LOGGER_STYLE_BLACK = 1,
@@ -423,7 +423,7 @@ enum ZrpLoggerStyle {
     ZRP_LOGGER_STYLE_BRIGHT_MAGENTA = 13,
     ZRP_LOGGER_STYLE_BRIGHT_CYAN = 14
 };
-#endif /* ZRP_LOGGER_STYLING */
+#endif /* ZRP_LOGGER_LOG_STYLING */
 
 static void
 zrpLoggerGetLogLevelName(const char **ppName, enum ZrLogLevel level)
@@ -451,7 +451,7 @@ zrpLoggerGetLogLevelName(const char **ppName, enum ZrLogLevel level)
     }
 }
 
-#if ZRP_LOGGER_STYLING
+#if ZRP_LOGGER_LOG_STYLING
 static void
 zrpLoggerGetLogLevelStyle(enum ZrpLoggerStyle *pStyle, enum ZrLogLevel level)
 {
@@ -533,7 +533,7 @@ zrpLoggerGetStyleAnsiCode(const char **ppCode, enum ZrpLoggerStyle style)
             ZR_ASSERT(0);
     }
 }
-#endif /* ZRP_LOGGER_STYLING */
+#endif /* ZRP_LOGGER_LOG_STYLING */
 
 ZRP_MAYBE_UNUSED static void
 zrpLoggerLogVaList(enum ZrLogLevel level,
@@ -551,7 +551,7 @@ zrpLoggerLogVaList(enum ZrLogLevel level,
 
     zrpLoggerGetLogLevelName(&pLevelName, level);
 
-#if ZRP_LOGGER_STYLING
+#if ZRP_LOGGER_LOG_STYLING
     if (isatty(fileno(stderr))) {
         enum ZrpLoggerStyle levelStyle;
 
@@ -563,7 +563,7 @@ zrpLoggerLogVaList(enum ZrLogLevel level,
     }
 #else
     pLevelStyleStart = pLevelStyleEnd = "";
-#endif /* ZRP_LOGGER_STYLING */
+#endif /* ZRP_LOGGER_LOG_STYLING */
 
     fprintf(stderr,
             "%s:%d: %s%s%s: ",
