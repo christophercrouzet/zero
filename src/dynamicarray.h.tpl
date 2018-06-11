@@ -149,7 +149,7 @@
 /* @include "partials/logger.h" */
 
 #define ZRP_DYNAMICARRAY_GET_BLOCK(pBuffer)                                    \
-    ((void *)&((struct ZrpDynamicArrayHeader *)pBuffer)[-1])
+    ((void *)&((struct ZrpDynamicArrayHeader *)(pBuffer))[-1])
 #define ZRP_DYNAMICARRAY_GET_HEADER(pBlock)                                    \
     ((struct ZrpDynamicArrayHeader *)(pBlock))
 #define ZRP_DYNAMICARRAY_GET_BUFFER(pBlock)                                    \
