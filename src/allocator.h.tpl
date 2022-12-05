@@ -102,7 +102,7 @@ struct ZrpAllocatorAlignmentOfHelper {
 #endif /* __cplusplus */
 
 #define ZRP_ALLOCATOR_IS_POWER_OF_TWO(x)                                       \
-    (((x) == ((x) & -(x))) && (x)) 
+    (((x) == ((x) & -(x))) && (x))
 
 /*
    The aligned allocator works by allocating a block of larger size than
@@ -165,8 +165,8 @@ static const size_t zrpAllocatorMinAlignment
 ZRP_MAYBE_UNUSED static int
 zrpAllocatorIsPowerOfTwo(size_t x)
 {
-    /* Decrement and compare approach. */
-    return (x != 0) && !(x & (x - 1));
+    /* Verify exactly one bit is set. */
+    return (x == (x & -x)) && x;
 }
 
 ZRP_MAYBE_UNUSED ZRP_ALLOCATOR_LINKAGE void *
